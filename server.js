@@ -9,11 +9,12 @@ const Expert = require('./models/Expert');//
 const Task = require('./models/Task');
 const bcrypt = require('bcrypt');
 const { send } = require('process');
-// import User from './models/User.mjs'; //how to use import?
+const cors = require("cors");
+
 
 //MONGOOSE////////////////////
-const uri = `mongodb+srv://admin-elliot:deakin2021@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
-// const uri = 'mongodb://localhost:27017/itrust';
+// const uri = `mongodb+srv://admin-elliot:deakin2021@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
+const uri = 'mongodb://localhost:27017/itrust';
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -24,6 +25,7 @@ db.once('open', function() {
 //EXPRESS////////////////
 let app = express();
 app.use(bodyParser.urlencoded({extended: true})); 
+app.use(cors())
 //makes things static from html (like css path)
 app.use(express.static('public')); 
 
@@ -64,6 +66,28 @@ app.get('/welcome', (req, res)=> {
   
 })
 
+//post new task
+app.route('/newtask')
+.post((req, res)=>{
+  const newTask = new Task({ 
+    title: req.body.title,
+    description: req.body.description,
+    // type: req.body.type,
+    // suburb: req.body.suburb,
+    // // image: req.body.image,
+    // date: req.body.date,
+    // budget: req.body.budget,
+    // amount: req.body.amount
+  })
+  newTask.save()
+  .catch((err)=> console.log(err))
+  res.json((`task saved to db: ${newTask}`))
+  // newTask.save((err, newtask)=>{
+  //   if(newtask) res.send(newtask)
+  //   else res.send(err)
+  // })
+})
+
 //HOME - Register ////////////////////////
 app.post('/', (req, res)=> { //will change route to /register.
   //create new user from body fields
@@ -82,7 +106,6 @@ app.post('/', (req, res)=> { //will change route to /register.
     zip: req.body.zip,
     terms: req.body.terms
   });
-
   //save new user to db
   newUser.save((err)=>{
     err ? console.log(err) : console.log('New User Inserted Succesfully')
