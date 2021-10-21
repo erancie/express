@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// import {Image} from 'mongoose'
 
 const taskSchema = new mongoose.Schema(
   {
@@ -17,7 +18,7 @@ const taskSchema = new mongoose.Schema(
       password: {
         type: String
       },
-      image: Image,
+      // image: Image,
       text: String,
   }
 )
