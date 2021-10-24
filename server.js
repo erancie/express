@@ -28,6 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
 //makes things static from html (like css path)
 app.use(express.static('public')); 
+app.use(bodyParser.json())
 
 const base= `${__dirname}/public`;
 
@@ -72,20 +73,16 @@ app.route('/newtask')
   const newTask = new Task({ 
     title: req.body.title,
     description: req.body.description,
-    // type: req.body.type,
-    // suburb: req.body.suburb,
-    // // image: req.body.image,
-    // date: req.body.date,
-    // budget: req.body.budget,
-    // amount: req.body.amount
+    type: req.body.type,
+    suburb: req.body.suburb,
+    image: req.body.image,
+    date: req.body.date,
+    budgettype: req.body.budgettype,
+    budgetamount: req.body.budgetamount
   })
   newTask.save()
   .catch((err)=> console.log(err))
   res.json((`task saved to db: ${newTask}`))
-  // newTask.save((err, newtask)=>{
-  //   if(newtask) res.send(newtask)
-  //   else res.send(err)
-  // })
 })
 
 //HOME - Register ////////////////////////
@@ -145,9 +142,8 @@ app.post('/', (req, res)=> { //will change route to /register.
       }
     ]
   }
-  //convert to JSON format
-  jsonData = JSON.stringify(data);
-  // //pass in new user in JSON format
+
+  jsonData = JSON.stringify(data);  //convert to JSON format
   // request.write(jsonData)   // enable API Key & uncomment to enable mailchimp
   // request.end()
 

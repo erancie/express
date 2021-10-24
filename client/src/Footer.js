@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { CgInstagram } from 'react-icons/cg'
 import { AiOutlineFacebook } from 'react-icons/ai'
 import { FiTwitter } from 'react-icons/fi'
-import {Button} from 'react-bootstrap'
 
 
 export default class Footer extends Component {
