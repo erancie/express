@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
-
 import expertList from './expertList'
 
 export default class Featuredexperts extends Component {

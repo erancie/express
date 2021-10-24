@@ -67,6 +67,16 @@ app.get('/welcome', (req, res)=> {
   
 })
 
+
+//get all tasks
+app.route('/findtask')
+.get((req, res)=>{
+  Task.find((err, taskList)=>{
+    if(err) res.send(err)
+    else res.send(taskList)
+  })
+})
+
 //post new task
 app.route('/newtask')
 .post((req, res)=>{
@@ -84,6 +94,7 @@ app.route('/newtask')
   .catch((err)=> console.log(err))
   res.json((`task saved to db: ${newTask}`))
 })
+
 
 //HOME - Register ////////////////////////
 app.post('/', (req, res)=> { //will change route to /register.

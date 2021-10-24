@@ -23,7 +23,7 @@ export default class Topnav extends Component {  //Child Class
             <Navbar.Collapse id="basic-navbar-nav" >
               <Nav className="me-auto ">
                 <Nav.Link className='link' href="/newtask">New Task</Nav.Link>
-                <Nav.Link className='link' href="#">Find Task</Nav.Link>
+                <Nav.Link className='link' href="/findtask">Find Task</Nav.Link>
                 <Nav.Link className='link' href="#">Experts</Nav.Link>
                 <Nav.Link className='link' href="#">How it Works</Nav.Link>
               </Nav>

@@ -1,6 +1,7 @@
 import './App.css';
 import Landing from './Landing';
 import Newtask from './Newtask'
+import Findtask from './Findtask';
 
 import {
   BrowserRouter as Router,
@@ -20,6 +21,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Landing}/>
             <Route path="/newtask" component={Newtask}/>
+            <Route path="/findtask" component={Findtask}/>
           </Switch>
         </div>
       </Router>
