@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Mongoose } from 'mongoose'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import { axios } from 'axios'
+import Topnav from './Topnav'
 
 const Findtask = () => {
 
@@ -20,42 +21,62 @@ const Findtask = () => {
     })
   }
 
-  //make single state object
-  const [searchTerm, setSearchTerm] = useState('')
-  const [suburbTerm, setSuburbTerm] = useState('')
-  const [dateTerm, setDateTerm] = useState('')
-  //make single change function
-  const onSearchChange =(e)=> setSearchTerm(e.target.value) 
-  const onSuburbChange =(e)=> setSuburbTerm(e.target.value) 
-  const onDateChange =(e)=> setDateTerm(e.target.value) 
+  // search term states
+      //make single state object
+  const [searchTerm, setSearch] = useState('')
+  const [suburbTerm, setSuburb] = useState('')
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
+      //make single change function
+  const onSearchChange =(e)=> setSearch(e.target.value) 
+  const onSuburbChange =(e)=> setSuburb(e.target.value) 
+  const onFromDateChange =(e)=> setFromDate(e.target.value) 
+  const onToDateChange =(e)=> setToDate(e.target.value) 
 
   // CARD LAYOUT *** change to bootstrap
   const TaskCard =(props)=> {
-      return <div className='column'>
-        <p>{props.title}</p>
-        <p>{props.description}</p>
-        <p>{props.suburb}</p>
-        <p>{props.date}</p>
-      </div>
+    let dateTime = new Date(props.date); 
+    let dateReadable = dateTime.getFullYear()+'-' + (dateTime.getMonth()+1) + '-'+dateTime.getDate();
+    return <div className='column'>
+      <p>{props.title}</p>
+      <p>{props.description}</p>
+      <p>{props.suburb}</p>
+      <p>{dateReadable}</p>
+    </div>
   }
 
   //FILTER & MAP TASKS
   const TaskList =(props)=> { 
+
+    //filter for title
     const filteredTasks = DBTasks.filter((task)=>{
       let filtered = task.title.toLowerCase().includes(props.search.toLowerCase())
-      //filter for suburb
-      //filter for date
       return filtered
     })
+    //filter for suburb
+    const intersection = filteredTasks.filter((task) => {
+      let filtered = task.suburb.toLowerCase().includes(props.suburb.toLowerCase())
+      return filtered
+    })
+    //filter for date
+
+    let resultFilter = intersection.filter((task) => {
+      let date = new Date(task.date);
+      let from = new Date(fromDate)
+      let to = new Date(toDate)
+      if (date >= from && date <= to)
+       return task 
+    });
+
     return ( 
       <div className='row'>
-        {filteredTasks.map((task) => 
+        {resultFilter.map((task) => 
           <TaskCard 
             // key = {task.key}
             title = {task.title}
             description = {task.description}
             suburb = {task.suburb}
-            date = {task.date}
+            date = { task.date}
           />
         )}
       </div>
@@ -63,6 +84,9 @@ const Findtask = () => {
   }
   return (
     <div>
+        <Topnav />
+        <br/><br/><br/><br/>
+
         <input         //SEARCH FIELD
           onChange = {onSearchChange}
           type="text"
@@ -76,18 +100,22 @@ const Findtask = () => {
           value = {suburbTerm}
         />
         <input         //SEARCH FIELD
-          onChange = {onDateChange}
-          type="text"
+          onChange = {onFromDateChange}
+          type="date"
           placeholder = "search date"
-          value = {dateTerm}
+          value = {fromDate}
+        />
+        <input         //SEARCH FIELD
+          onChange = {onToDateChange}
+          type="date"
+          placeholder = "search date"
+          value = {toDate}
         />
 
-        <TaskList search={searchTerm} suburb={suburbTerm} date={dateTerm}/>
+        <TaskList search={searchTerm} suburb={suburbTerm} from={fromDate} to={toDate} />
 
     </div>
   )
 }
 export default Findtask
-
-
 

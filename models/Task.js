@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     description: String,
     type: String,
     suburb: String,
-    // image: Buffer, //change this to buffer**
+    // image: Buffer, //change this to buffer** TO DO **
     date: Date,
     budgettype: {
       type: String,
