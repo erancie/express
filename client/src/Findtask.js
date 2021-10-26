@@ -1,53 +1,63 @@
-import React, { useState, useEffect } from 'react'
-import { Mongoose } from 'mongoose'
+import React, { useState, useEffect, useCallback, nextPath } from 'react'
+import { useHistory } from 'react-router-dom'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
-import { axios } from 'axios'
+// import { axios } from 'axios'
 import Topnav from './Topnav'
 
 const Findtask = () => {
 
-  // create state for tasks
-  const [DBTasks, setDBTasks] = useState([]) 
-
-  // load tasks
-  useEffect(() => getTasks())
-
-  // get list of tasks from db
-  let getTasks =()=>{ 
-    fetch('http://localhost:8080/findtask')
-    .then(response=> response.json() )
-    .then(data => {
-      setDBTasks(data)
+  const [findState, setFindState] = useState({
+    searchTerm: '',
+    suburbTerm: '',
+    fromDate: '2021-10-01',
+    toDate: '2021-10-30'
+  })
+  const handleChange = (event)=>{
+    const {name, value } = event.target
+    setFindState((preValue)=>{  
+      return {
+        ...preValue,
+        [name]: value
+      }
     })
   }
+  //Date() to string
+  const dateString = (date) => {
+    let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
+    return dateReadable
+  }
+  //////////////////////////////////////////////////////////////
+  // CARD LAYOUT *** change to bootstrap////////////////////////
+  const history = useHistory();
+  const handleClickTask = () => history.push('/');
 
-  // search term states
-      //make single state object
-  const [searchTerm, setSearch] = useState('')
-  const [suburbTerm, setSuburb] = useState('')
-  const [fromDate, setFromDate] = useState('')
-  const [toDate, setToDate] = useState('')
-      //make single change function
-  const onSearchChange =(e)=> setSearch(e.target.value) 
-  const onSuburbChange =(e)=> setSuburb(e.target.value) 
-  const onFromDateChange =(e)=> setFromDate(e.target.value) 
-  const onToDateChange =(e)=> setToDate(e.target.value) 
-
-  // CARD LAYOUT *** change to bootstrap
   const TaskCard =(props)=> {
-    let dateTime = new Date(props.date); 
-    let dateReadable = dateTime.getFullYear()+'-' + (dateTime.getMonth()+1) + '-'+dateTime.getDate();
-    return <div className='column'>
+    let dateTime = new Date(props.date); //from ISO
+    let dateReadable = dateString(dateTime) //to string
+    return <div onClick={handleClickTask} className='column'>
       <p>{props.title}</p>
       <p>{props.description}</p>
       <p>{props.suburb}</p>
       <p>{dateReadable}</p>
+      <button onClick={(e) => {props.delete(e, props.id)}}>X</button>
     </div>
   }
-
-  //FILTER & MAP TASKS
+  /////////////////////////////////////////////////////////////
+  //FILTER & MAP TASKS/////////////////////////////////////////
   const TaskList =(props)=> { 
-
+    // create state for tasks
+    const [DBTasks, setDBTasks] = useState([]) 
+    // load tasks
+    useEffect(() => getTasks(), [])
+    // get list of tasks from db
+    let getTasks =()=>{ 
+      fetch('http://localhost:8080/findtask')
+      .then(response=> response.json() )
+      .then(data => {
+        setDBTasks(data)
+      })
+      console.log(DBTasks)
+    }
     //filter for title
     const filteredTasks = DBTasks.filter((task)=>{
       let filtered = task.title.toLowerCase().includes(props.search.toLowerCase())
@@ -59,61 +69,70 @@ const Findtask = () => {
       return filtered
     })
     //filter for date
-
     let resultFilter = intersection.filter((task) => {
-      let date = new Date(task.date);
-      let from = new Date(fromDate)
-      let to = new Date(toDate)
+      let date = new Date(task.date);//ISO
+      let from = new Date(findState.fromDate)
+      let to = new Date(findState.toDate)
       if (date >= from && date <= to)
        return task 
     });
-
-    return ( 
+    const handleRemove = function(e, id) {
+      e.stopPropagation()
+      let newArray = DBTasks.filter(item => item._id !== id)
+      setDBTasks(newArray);
+    }
+    return ( ///////////////////////////////////////////////
       <div className='row'>
-        {resultFilter.map((task) => 
+        {resultFilter.map((task, index) => 
           <TaskCard 
-            // key = {task.key}
+            key = {task._id}
+            id = {task._id}
             title = {task.title}
             description = {task.description}
             suburb = {task.suburb}
-            date = { task.date}
+            date = {task.date}
+            delete = {handleRemove}
           />
         )}
       </div>
     )
   }
+
   return (
     <div>
         <Topnav />
         <br/><br/><br/><br/>
-
         <input         //SEARCH FIELD
-          onChange = {onSearchChange}
+          onChange = {handleChange}
+          name= {'searchTerm'}    //need name same as state to handle complex state
           type="text"
           placeholder = "search title"
-          value = {searchTerm}
+          value = {findState.searchTerm}
         />
         <input         //SEARCH FIELD
-          onChange = {onSuburbChange}
+          onChange = {handleChange}
+          name = {'suburbTerm'}
           type="text"
           placeholder = "search suburb"
-          value = {suburbTerm}
+          value = {findState.suburbTerm}
         />
         <input         //SEARCH FIELD
-          onChange = {onFromDateChange}
+          onChange = {handleChange}
+          name={'fromDate'}
           type="date"
-          placeholder = "search date"
-          value = {fromDate}
+          value = {findState.fromDate}
         />
         <input         //SEARCH FIELD
-          onChange = {onToDateChange}
+          onChange = {handleChange}
+          name={'toDate'}
           type="date"
-          placeholder = "search date"
-          value = {toDate}
+          value = {findState.toDate}
         />
-
-        <TaskList search={searchTerm} suburb={suburbTerm} from={fromDate} to={toDate} />
-
+        <TaskList search={findState.searchTerm} 
+                  suburb={findState.suburbTerm} 
+                  from={findState.fromDate} 
+                  to={findState.toDate}                  
+        />
     </div>
   )
 }
