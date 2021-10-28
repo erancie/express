@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const userSchema = new mongoose.Schema({ 
+const taskSchema = new mongoose.Schema({ 
     title: String,
     description: String,
     type: String,
@@ -14,4 +14,4 @@ const userSchema = new mongoose.Schema({
     },
     budgetamount: Number
 })
-module.exports = mongoose.model('Task', userSchema);
+module.exports = mongoose.model('Task', taskSchema);

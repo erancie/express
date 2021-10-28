@@ -10,6 +10,7 @@ const Task = require('./models/Task');
 const bcrypt = require('bcrypt');
 const { send } = require('process');
 const cors = require("cors");
+const { findById } = require('./models/User');
 
 
 //MONGOOSE////////////////////
@@ -64,22 +65,17 @@ app.post('/login', (req, res)=> {
 //welcome page////////////////////////////
 app.get('/welcome', (req, res)=> {
   res.sendFile(base + "/welcome.html")
-  
 })
 
-
-//get all tasks
-app.route('/findtask')
-.get((req, res)=>{
+///TASKS///////////////////
+app.route('/tasks')
+.get((req, res)=>{ //get all tasks
   Task.find((err, taskList)=>{
     if(err) res.send(err)
-    else res.send(taskList)
+    else res.json(taskList)
   })
 })
-
-//post new task
-app.route('/newtask')
-.post((req, res)=>{
+.post((req, res)=>{ //post new task
   const newTask = new Task({ 
     title: req.body.title,
     description: req.body.description,
@@ -93,8 +89,31 @@ app.route('/newtask')
   newTask.save()
   .catch((err)=> console.log(err))
   res.json((`task saved to db: ${newTask}`))
+  // res.redirect('/findtask') //how to redirect to react front end?
+            //how to show react front end ?
 })
 
+app.route('/tasks/:id') //get task item
+.get((req, res)=> { 
+  console.log(req.params.id)
+  Task.find({_id: req.params.id}, (err, task)=>{
+    if(err) res.send(err)
+    else {
+      res.json(task)
+      console.log(`res.json(task) - ${task}`)
+    }
+  })
+})
+.patch((req, res)=> {
+  Task.updateOne(
+    { _id: req.params.id},
+    { $set: req.body },
+    (err)=>{
+      if(err) res.send(err)
+      else res.send('Task Updated')
+    }
+  )
+})
 
 //HOME - Register ////////////////////////
 app.post('/', (req, res)=> { //will change route to /register.
@@ -206,7 +225,7 @@ app.route('/experts')
   })
 })
 ////------------- >  item  ename
-app.route('/experts/:ename')
+app.route('/experts/:id')
 //retreive expert
 .get((req, res)=>{
   let name = req.params.ename
@@ -218,40 +237,52 @@ app.route('/experts/:ename')
     }
   })
 })
-//update expert name
+//replace all resource field with PUT req. using overwrite?
 .put((req, res)=>{
   Expert.updateOne(
-    { name: req.params.ename }, //condition
-    { name: req.body.name },  // new name
-    // {overwrite: false}, //true clears other fields
-    (err)=>{
+    { _id: req.params.id }, //update by name
+    { $set: req.body },  // new values from all body fields
+    {overwrite: true}, //true clears other fields 
+    (err)=>{  //*FIX* doesn't overwrite
       if (err) res.send(err)
-      else res.send(`Updated name`)
+      else res.send(`Expert Replaced`)
     }  
   )
 })
-//update expert address, mobile, password
+//update single expert fields
+.patch((req, res)=>{
+  Expert.updateOne(
+    { _id: req.params.id }, // search by id
+    { $set: req.body },  // updates all fields in body of req.
+    (err)=>{
+      if (err) res.send(err)
+      else res.send(`Expert Updated`)
+    }  
+  )
+})
+//remove first match expert
+.delete((req, res)=>{
+  let id = req.params.id
+  Expert.deleteOne({_id: id}, (err)=>{
+    if(err) res.send(err)
+    else res.send(`${id} deleted. `)
+  })
+})
+
+
+//update many expert via name *TO FIX* - wont update many
+app.route('/expertsmany/:name')
 .patch((req, res)=>{
   Expert.updateMany( 
-    {name: req.params.ename},
-    {$set: req.body }, //updates all requested in body of req.
+    {name: req.params.name},
+    {$set: req.body }, 
     (err)=>{
-      if(!err) res.send('Expert update successful')
+      if(!err) res.send('Experts updated successfully')
       else res.send(err)
     }
   )
 })
-//remove expert
-.delete((req, res)=>{
-  let name = req.params.ename
-  Expert.deleteOne({name: name}, (err)=>{
-    if(err) res.send(err)
-    else res.send(`${name} deleted. `)
-  })
-})
 
-////////////////////////////////////////////
-//way to import api modules to server.js?***
 
 ///// USER API ////////////**next**/
 app.get('/users', (req,res)=>{

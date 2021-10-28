@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useCallback, nextPath } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, generatePath } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 // import { axios } from 'axios'
 import Topnav from './Topnav'
 
 const Findtask = () => {
-
+  const history = useHistory(); 
   const [findState, setFindState] = useState({
     searchTerm: '',
     suburbTerm: '',
     fromDate: '2021-10-01',
     toDate: '2021-10-30'
   })
+  // const [id, setId] = useState();
+
   const handleChange = (event)=>{
     const {name, value } = event.target
     setFindState((preValue)=>{  
@@ -26,15 +29,18 @@ const Findtask = () => {
     let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
     return dateReadable
   }
-  //////////////////////////////////////////////////////////////
-  // CARD LAYOUT *** change to bootstrap////////////////////////
-  const history = useHistory();
-  const handleClickTask = () => history.push('/');
-
+  /////////////////////////////////////
+  // TASK CARD ////////////////////////
   const TaskCard =(props)=> {
+    const handleClickTask = (id) => { 
+      console.log(`from clicked task - ${id}`)
+      const path = generatePath("/findtask/:id", { id })
+      history.push(path);
+    }
     let dateTime = new Date(props.date); //from ISO
     let dateReadable = dateString(dateTime) //to string
-    return <div onClick={handleClickTask} className='column'>
+
+    return <div onClick={()=>handleClickTask(props.id)} className='column'>
       <p>{props.title}</p>
       <p>{props.description}</p>
       <p>{props.suburb}</p>
@@ -45,18 +51,14 @@ const Findtask = () => {
   /////////////////////////////////////////////////////////////
   //FILTER & MAP TASKS/////////////////////////////////////////
   const TaskList =(props)=> { 
-    // create state for tasks
-    const [DBTasks, setDBTasks] = useState([]) 
-    // load tasks
-    useEffect(() => getTasks(), [])
-    // get list of tasks from db
-    let getTasks =()=>{ 
-      fetch('http://localhost:8080/findtask')
+    const [DBTasks, setDBTasks] = useState([])     // create state for tasks
+    useEffect(() => getTasks(), [])    // load tasks
+    let getTasks =()=>{     // get list of tasks from db
+      fetch('http://localhost:8080/tasks')
       .then(response=> response.json() )
-      .then(data => {
+      .then((data) => {
         setDBTasks(data)
       })
-      console.log(DBTasks)
     }
     //filter for title
     const filteredTasks = DBTasks.filter((task)=>{
@@ -65,7 +67,8 @@ const Findtask = () => {
     })
     //filter for suburb
     const intersection = filteredTasks.filter((task) => {
-      let filtered = task.suburb.toLowerCase().includes(props.suburb.toLowerCase())
+      // console.log(task)
+      let filtered = task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
       return filtered
     })
     //filter for date

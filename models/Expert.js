@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 // import {Image} from 'mongoose'
 
-const taskSchema = new mongoose.Schema(
+const expertSchema = new mongoose.Schema(
   {
       name: {
           type: String,
@@ -23,4 +23,4 @@ const taskSchema = new mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model("Experts", taskSchema);
+module.exports = mongoose.model("Expert", expertSchema);

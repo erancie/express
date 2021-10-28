@@ -24,7 +24,7 @@ const Newtask = () => {
   }
   const handleOnclick = () => {
     console.log(task)
-    fetch('http://localhost:8080/newtask', {
+    fetch('http://localhost:8080/tasks', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body : JSON.stringify({
