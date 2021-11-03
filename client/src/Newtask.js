@@ -1,15 +1,30 @@
 import React, { useState } from 'react'
 import { Form, Button, Container, Col, Row } from 'react-bootstrap'
 import Topnav from './Topnav'
+import FadeIn from 'react-fade-in/lib/FadeIn'
+// import { Fade } from 'react-bootstrap'
+// import { default as Fade } from 'react-fade'
+
 
 const Newtask = () => {
+
+  const today = new Date()
+  console.log(`today: ${today}`)
+
+  const dateString = (date) => {   //Date() to string
+    let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
+    return dateReadable
+  }
+  const todayString = dateString(today)
+  console.log(`todayString: ${todayString}`)
+
   const [task, setTask] = useState({
     title: '',
     description: '',
     type: null,
     suburb: '',
     image: null,
-    date: null,
+    date: todayString, //converts back to Date if default submitted
     budgettype: null,
     budgetamount: null
   })
@@ -59,6 +74,8 @@ const Newtask = () => {
         </Form.Group>
       ) 
   }
+
+
   const title =()=>{
     if(task.type === 'online'){
       return ' - Online'
@@ -87,6 +104,7 @@ const Newtask = () => {
   return (
     <div>
       <Topnav />
+      <FadeIn>
       <Container style={{marginTop: '150px'}}>
         <h1>New Task <span style={{color: 'grey'}}>{title()}</span></h1>
         <Form style={{textAlign: 'left'}}> {/* onSubmit={handleSubmit}  */}
@@ -122,20 +140,27 @@ const Newtask = () => {
           </Form.Group>
           <Form.Group as={Row} controlId="image" className="mb-3">
             <Col sm='3'><Form.Label>Add a task image:</Form.Label></Col>
-
+            {/* Image Upload -TO ADD */}
             <Col sm='5'><Form.Control onChange={handleChange} 
                                       name='image' type="file" 
                                       onChange={handleChange} 
                                       accept="image/png, image/jpeg"
                                       className="pb-3" style={{height: '2.8em'}}  /></Col>
-          
           </Form.Group>
           <h3 className="mt-5 mb-3">Setting up your task </h3>
-          {task.type === 'inperson' ? suburbInput() : null }
+
+          <FadeIn>
+            {task.type === 'inperson' ? suburbInput() : null }
+          </FadeIn>
+          {/* <Fade in={task.type==='inperson'}></Fade> */}
+
           <Form.Group as={Row} className="mb-3" controlId="date">
             <Form.Label className="my-3" column sm="2">Date: </Form.Label>
             <Col sm='6' >
-              <Form.Control onChange={handleChange} type='date' name='date' placeholder="Enter date" className="my-3" />
+              <Form.Control onChange={handleChange} 
+                            type='date' 
+                            name='date' 
+                            value={task.date} className="my-3" />
             </Col>
           </Form.Group>
           <h3 className="mt-5 mb-3">Suggest your estimated budget amount</h3>
@@ -155,6 +180,7 @@ const Newtask = () => {
                   > POST TASK </Button>
         </Form>
       </Container >
+      </FadeIn>
     </div>
   )
 }

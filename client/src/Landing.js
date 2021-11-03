@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import './landing.css'
+import './css/main.css'
 import Topnav from './Topnav'
-import Featuredexperts from './Featuredexperts'
+import Featuredexperts from './Comps/Featuredexperts'
 import Footer from './Footer'
-
 
 class Landing extends Component {
   render() {
@@ -22,5 +21,4 @@ class Landing extends Component {
     )
   }
 }
-
 export default Landing

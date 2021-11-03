@@ -1,6 +1,10 @@
 import React, { useState, useEffect} from 'react'
+import FadeIn from 'react-fade-in';
+import { generatePath, useHistory } from 'react-router'
+
 
 const Edittask = (props) => {
+  const history = useHistory(); 
 
   const [newVals, setNewVals] = useState({
     title: props.task.title,
@@ -21,33 +25,30 @@ const Edittask = (props) => {
         [name]: value
       }
     })
-    console.log(newVals)
+    console.log(`name: ${name} value: ${value}`)
   }
-  // const patchTask = () => {  }
+
   const handleClick =()=>{
-    // patchTask()
+
     fetch(`http://localhost:8080/tasks/${props.task._id}`, {
-        _method: 'PATCH',
-        crossDomain: true,
-        xhrFields: {
-            withCredentials: true
-        },
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': ''
-        },
-        data: JSON.stringify(newVals)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
+      method: "PATCH",  
+      headers: {    "Content-type": "application/json"  },  
+      body: JSON.stringify(newVals)}) 
+    .then(response => {    console.log(response.status);     
+      return response.json();  })  
+    .then(data => console.log(data)) //no log on success - 200
     .catch(err => {
-        console.log("Error:" + err)
+        console.log("Error:" + err) //why saying error, patch works
     })
+    // history.push(generatePath(`/findtask/${props.task._id}`));
+    //find refresh option
+    history.push(generatePath(`/findtask`));
+    
   }
   return (
     <div>
       <hr/>
+      <FadeIn>
       <div>
         <label for='title'>Title: </label>
         <input  
@@ -61,7 +62,7 @@ const Edittask = (props) => {
       </div>
 
       <div>
-        <label for='description'>Description: </label>
+        <label htmlFor='description'>Description: </label>
         <input  
           id='description'       
           onChange = {handleChange}
@@ -71,7 +72,20 @@ const Edittask = (props) => {
           value = {newVals.description}
         />
       </div>
+
+      <div>
+        <label htmlFor='budgetamount'>budgetamount: </label>
+        <input  
+          id='budgetamount'       
+          onChange = {handleChange}
+          name = {'budgetamount'}
+          type="number"
+          // placeholder = "enter new description"
+          value = {newVals.budgetamount}
+        />
+      </div>
       <button onClick={handleClick} >CHANGE</button>
+      </FadeIn>
 
     </div>
   )
