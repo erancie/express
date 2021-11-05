@@ -256,8 +256,6 @@ app.route('/tasks')
   newTask.save()
   .catch((err)=> console.log(err))
   res.json((`task saved to db: ${newTask}`))
-  // res.redirect('/findtask') //how to redirect to react front end?
-            //how to show react front end ?
 })
  //get task item
 app.route('/tasks/:id')
