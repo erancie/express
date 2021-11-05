@@ -125,7 +125,6 @@ app.post('/users', (req, res)=> { //change to /users
   //redirect to home/welcome page - or dashboard. 
   if(res.statusCode === 200){
     res.json({success:true})
-    // res.redirect('/login.html') //redirect uses public folder
   }else{   //front end error //**TO FIX** - only sends status 200
     res.redirect('/404.html')
   }
