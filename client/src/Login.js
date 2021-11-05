@@ -27,22 +27,14 @@ const Login = () => {
   }
   //HANDLE POST/GET CLICK
   const handleSubmit = (e) => {
-    console.log('handleSubmit')
-    console.log(`register: ${login}`)
-    console.log(login)
     e.preventDefault()
-    axios.post('http://localhost:8080/login', login)
+    axios.post('/login', login)
     .then(response => {  
-      // how to get res.json({  success:true, redirectUrl: '/'}) ??????
       if (response.data.success) { setRedirect(true) }
-      console.log('RESPONSE: '+ response); //why these not working???
-      // console.log(response.data);
-      // console.log(response.data.redirectUrl);
     }, 
     (error) => {
       console.log(error);
     })
-    // history.push('/')
   }
   if (redirect) {
     return <Redirect to='/'/>;

@@ -30,8 +30,8 @@ export default class Topnav extends Component {  //Child Class
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
                 <Nav>
-                  <Nav.Link href="/login">Sign In</Nav.Link>
                   <Nav.Link href="/register">Register</Nav.Link>
+                  <Nav.Link href="/login">Sign In</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
           </Container>

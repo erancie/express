@@ -49,6 +49,7 @@ app.post('/login', (req, res)=> {
         }else{
           console.log("Password compare : " + result)//false
           res.json({ success: false })
+          throw new Error('Wrong Password. Error: ' + e)
         }
       })
     }
@@ -123,7 +124,8 @@ app.post('/users', (req, res)=> { //change to /users
 
   //redirect to home/welcome page - or dashboard. 
   if(res.statusCode === 200){
-    res.redirect('/login.html') //redirect uses public folder
+    res.json({success:true})
+    // res.redirect('/login.html') //redirect uses public folder
   }else{   //front end error //**TO FIX** - only sends status 200
     res.redirect('/404.html')
   }

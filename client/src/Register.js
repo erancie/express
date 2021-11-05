@@ -1,4 +1,6 @@
+import axios from 'axios'
 import React , {useState} from 'react'
+import { Redirect } from 'react-router'
 import './css/main.css'
 
  const Register = () => {
@@ -8,18 +10,20 @@ import './css/main.css'
     firstname: "",
     lastname: "",
     email: "",
-    country: "",
+    country: "Australia",
     password: "",
     password2: "",
     address: "",
     address2: "",
     city: "",
-    state: "",
+    state: "VIC",
     phoneNumber: "",
     zip: "",
     terms: false
   })
   console.log(register)
+  //redirect
+  const [redirect, setRedirect] = useState(false)
   //HANDLE INPUT CHANGE
   const handleChange = (event)=>{
     const {name, value} = event.target
@@ -33,22 +37,17 @@ import './css/main.css'
     console.log(`name: ${name} value: ${value}`)
   }
   //HANDLE POST CLICK
-  const handleSubmit = () => {
-    console.log('handleSubmit')
-    console.log(`register: ${register}`)
-    console.log(register)
-    fetch('/users', {
-      method: 'post',
-      headers: {'Content-Type': 'application/json'},
-      body : JSON.stringify(register)
-    })
-    .then(response => response)
-    .then(data => console.log(data))
-    .catch(err => {
-        console.log("Error:" + err)
-    })
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios.post('/users', register)
+    .then(res => {
+      if (res.data.success) {setRedirect(true)}
+    },
+    (err)=>{console.log(err)})
   }
-
+  if (redirect) {
+    return <Redirect to='/login'/>;
+  }
   return (
     <div className="left">
       <div className="container d-flex justify-content-end mt-5">
@@ -140,13 +139,13 @@ import './css/main.css'
           </div>
           <div className="form-group">
             <div className="form-check">
-              <input name='terms' onChange={handleChange} className="form-check-input" type="checkbox" id="terms" required></input>
+              <input name='terms' onChange={handleChange} className="form-check-input" type="checkbox" id="terms"></input>
               <label className="form-check-label" htmlFor="terms">
                 I agree to the <a href="#">Terms & Conditions</a>
               </label>
             </div>
           </div>
-          <button onClick={handleSubmit} className="btn btn-primary mb-5">Sign in</button>
+          <button onClick={(e)=>handleSubmit(e)} className="btn btn-primary mb-5">Sign in</button>
         </form>
         
       </div>
