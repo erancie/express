@@ -25,7 +25,7 @@ export default class Topnav extends Component {  //Child Class
                 <Nav.Link className='link' href="/newtask">New Task</Nav.Link>
                 <Nav.Link className='link' href="/findtask">Find Task</Nav.Link>
                 <Nav.Link className='link' href="/experts">Experts</Nav.Link>
-                <Nav.Link className='link' href="#">How it Works</Nav.Link>
+                {/* <Nav.Link className='link' href="#">How it Works</Nav.Link> */}
               </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">

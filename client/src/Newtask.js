@@ -5,7 +5,6 @@ import FadeIn from 'react-fade-in/lib/FadeIn'
 // import { Fade } from 'react-bootstrap'
 // import { default as Fade } from 'react-fade'
 
-
 const Newtask = () => {
 
   const today = new Date()
@@ -39,7 +38,7 @@ const Newtask = () => {
   }
   const handleOnclick = () => {
     console.log(task)
-    fetch('http://localhost:8080/tasks', {
+    fetch('/tasks', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body : JSON.stringify({
@@ -104,9 +103,9 @@ const Newtask = () => {
   return (
     <div>
       <Topnav />
+      <h1 style={{marginTop: '150px'}}>New Task <span style={{color: 'grey'}}>{title()}</span></h1>
       <FadeIn>
-      <Container style={{marginTop: '150px'}}>
-        <h1>New Task <span style={{color: 'grey'}}>{title()}</span></h1>
+      <Container>
         <Form style={{textAlign: 'left'}}> {/* onSubmit={handleSubmit}  */}
           <h3 className="mt-5 mb-3">Select task type</h3>
           <Form.Group as={Row} className="mb-3" controlId="tasktype" required>

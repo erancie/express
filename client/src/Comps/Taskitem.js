@@ -1,8 +1,12 @@
 import React, { useState, useEffect} from 'react'
 import { useParams , useHistory } from "react-router-dom";
+import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import Edittask from './Edittask';
 import Topnav from '../Topnav';
 import FadeIn from 'react-fade-in';
+import pic from '../Assets/pic-place.png'
+import '../css/main.css'
+
 // import { ReactCSSTransitionGroup } from 'react-transition-group'; // ES6
 // import { CSSTransition } from 'react-transition-group';
 
@@ -16,7 +20,7 @@ const Taskitem =()=> {
   useEffect(() => {getTask()}, [] )
 
   let getTask =()=>{   // get task from db
-    fetch(`http://localhost:8080/tasks/${id}`)
+    fetch(`/tasks/${id}`)
     .then(response=> response.json())
     .then((data) => {
       console.log(data[0])
@@ -37,25 +41,32 @@ const Taskitem =()=> {
           <Topnav />
 
           <FadeIn>
-            <div>
-              <p style={{marginTop: '100px'}}>{task.title}</p>
-              <p>{task.description}</p>
-              <p>{task.suburb}</p>
-              <p>{dateReadable}</p>
-              <p>Task Type: {task.type}</p>
-              <p>Budget Type-- {task.budgettype}</p>
-              <p>Budget Amount-- {task.budgetamount}</p>
-              <p>Task Item Id: {id}</p>
-              <p>Obj _id: {task._id}</p>
-              <br/><br/>
-              <button onClick={handleBack} >BACK</button>
-              <br/><br/>
-              <button onClick={handleEdit} >EDIT</button>
-            </div>
+            {/* <Container fluid> */}
+              <Card className='text' style={{fontSize: '1.6rem', border: 'none'}}>
+                <Card.Title style={{marginTop: '100px', fontSize: '3rem'}}>{task.title}</Card.Title>
+                <Card.Body style={{maxWidth: '1800px', margin: 'auto'}}>
+                  <Row className='mb-4 p-4 align-items-center'>
+                    <Col xs={12} md={1} />
+                    <Col xs={12} md={5}>
+                        <Card.Img src={pic} style={{width: '80%', boxShadow: '3px 4px 18px rgba(0, 0, 0, 0.18)'}} className='mb-3'/>
+                    </Col>
+                    <Col xs={12} md={5} className='py-4'>
+                        <Card.Text>Description: {task.description}</Card.Text>
+                        <Card.Text><span>Location: </span>{task.suburb}</Card.Text>
+                        <Card.Text><span>Date: </span>{dateReadable}</Card.Text>
+                        <Card.Text>Type: {task.type}</Card.Text>
+                        <Card.Text><span>Budget: </span> ${task.budgetamount} {task.budgettype}</Card.Text>
+                    </Col>
+                    <Col xs={12} md={1} />
+                  </Row>
+                  <Button className='p-3 m-3' onClick={handleBack} variant='outline-warning' >BACK</Button>
+                  <Button className='p-3 m-3' onClick={handleEdit} variant='outline-info' >EDIT</Button>
+                </Card.Body>
+              </Card>
+            {/* </Container> */}
           </FadeIn>
           
           {toEdit === true ? <Edittask task={task} /> :  null}
-          
         </div>
 }
 export default Taskitem

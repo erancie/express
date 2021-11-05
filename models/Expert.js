@@ -20,6 +20,7 @@ const expertSchema = new mongoose.Schema(
       },
       // image: Image,
       text: String,
+      rating: Number
   }
 )
 

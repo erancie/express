@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import FadeIn from 'react-fade-in/lib/FadeIn';
+import avatar from '../Assets/avatar.jpg'
 
  const Featuredexperts = () => {
 
@@ -9,31 +10,12 @@ import FadeIn from 'react-fade-in/lib/FadeIn';
   useEffect(() => getExperts(), [])  
 
   const getExperts =()=>{  
-    fetch('http://localhost:8080/experts')
+    fetch('/experts')
     .then(response=> response.json() )
     .then((data) => {
       setExperts(data)
     })
-  }
-
-  const LoopExpertCards = () => {
-    let cards =[];
-    for (const key in experts) {
-      cards.push(
-          <Col key={key.toString()} xs='12' md='6' lg='4' xl='3'>
-            <Card  style={{ width: '18rem', margin: 'auto'}}>
-              <Card.Img variant="top" src={experts[key].image} />
-              <Card.Body>
-                <Card.Title>{experts[key].name}</Card.Title>
-                <Card.Text>{experts[key].text}</Card.Text>
-                <Card.Text>Rating - {experts[key].rating}/5</Card.Text>
-                <Button className='button' variant="primary">Contact {experts[key].name}</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-      )
-    }
-    return cards;
+    .catch(err => console.log(err))
   }
 
   const MapExpertCards = () => {
@@ -41,8 +23,9 @@ import FadeIn from 'react-fade-in/lib/FadeIn';
       return( // or explicit 'return' required for .map() 
         <Col key={expert._id.toString()} xs='12' md='6' lg='4' xl='3'>
           <FadeIn>
-            <Card  style={{ width: '18rem', margin: 'auto'}}>
-              <Card.Img variant="top" src={expert.image} />
+            <Card className='p-2 my-3' style={{ width: '18rem', margin: 'auto'}}>
+              <Card.Img variant="top" src={avatar} />
+              {/* src={expert.image} */}
               <Card.Body>
                 <Card.Title>{expert.name}</Card.Title>
                 <Card.Text>Location: {expert.address}</Card.Text>
@@ -60,13 +43,34 @@ import FadeIn from 'react-fade-in/lib/FadeIn';
   return (
     <div className='experts'>
       <Container fluid>
-        <h1 style={{padding: '3rem'}}>Featured Experts</h1>
-        <Row className="row">
-          {/* {LoopExpertCards()} */}
+        <Row > {/* style={{justifyContent: 'center'}} */}
           {MapExpertCards()}
+          {/* {LoopExpertCards()} */}
         </Row>
       </Container>
     </div>
   )
 }
 export default Featuredexperts
+
+
+
+// const LoopExpertCards = () => {
+//   let cards =[];
+//   for (const key in experts) {
+//     cards.push(
+//         <Col className='p-3' key={key.toString()} xs='12' md='6' lg='4' xl='3'>
+//           <Card className='m-2' style={{ width: '18rem'}}>
+//             <Card.Img variant="top" src={experts[key].image} />
+//             <Card.Body>
+//               <Card.Title>{experts[key].name}</Card.Title>
+//               <Card.Text>{experts[key].text}</Card.Text>
+//               <Card.Text>Rating - {experts[key].rating}/5</Card.Text>
+//               <Button className='button' variant="primary">Contact {experts[key].name}</Button>
+//             </Card.Body>
+//           </Card>
+//         </Col>
+//     )
+//   }
+//   return cards;
+// }

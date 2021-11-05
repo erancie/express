@@ -14,8 +14,8 @@ const { findById } = require('./models/User');
 
 
 //MONGOOSE////////////////////
-// const uri = `mongodb+srv://admin-elliot:deakin2021@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
-const uri = 'mongodb://localhost:27017/itrust';
+const uri = `mongodb+srv://admin-elliot:deakin2021@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
+// const uri = 'mongodb://localhost:27017/itrust';
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -32,12 +32,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
+app.get('/', (req, res)=> { res.send('iService API') })
 
 ///////////////////  //find user according to email 
 // LOGIN //////////  //if exists, compare form password to user password 
-
 app.post('/login', (req, res)=> { 
-
   const {email, password} = req.body;
   User.findOne({ email: email}, (e, user)=>{
     if (e) { res.send("No such email.") }    //*FIX*- handle no email err
@@ -45,15 +44,11 @@ app.post('/login', (req, res)=> {
       bcrypt.compare(password, user.password, (e, result)=>{
         if (result) { //bool
           console.log("Password compare : " + result + ". logged in.")//true
-          
           //send back json here for isLoggedIn views in react
-          res.json({
-            success: true
-            // redirectUrl: '/'
-          })
+          res.json({ success: true })
         }else{
           console.log("Password compare : " + result)//false
-          res.send("Incorrect password")
+          res.json({ success: false })
         }
       })
     }
@@ -61,7 +56,7 @@ app.post('/login', (req, res)=> {
 })
 //END LOGIN-----------------
 
-/////////////////////////////////////////////
+
 ///// USERS API //////////////////////////////
 app.get('/users', (req,res)=>{
   User.find({}, (err, users)=>{
@@ -70,7 +65,7 @@ app.get('/users', (req,res)=>{
   })
 })
 
-//- USER Registration ////////////////////////
+//- USER Registration //
 app.post('/users', (req, res)=> { //change to /users
   //create new user from body fields
   const newUser = new User({
@@ -96,7 +91,6 @@ app.post('/users', (req, res)=> { //change to /users
       //get body form fields for mailchimp
       let {firstname, lastname, email} = req.body;
       console.log(firstname, lastname, email);
-
       //mailchimp api key
       const apiKey = '4cf53003ebc05f4c27f8a03b9338c6fa-us5';
       //mailchimp audience/list id
@@ -133,7 +127,7 @@ app.post('/users', (req, res)=> { //change to /users
   }else{   //front end error //**TO FIX** - only sends status 200
     res.redirect('/404.html')
   }
-})//end post / || /users
+})//end post /users
 
 //delete all users
 app.delete('/users', (req, res)=>{
@@ -144,9 +138,9 @@ app.delete('/users', (req, res)=>{
 })
 //END USERS---------------------------------------------
 
-//////////// EXPERT API //////// TASK 6.1P ////////////////  
-//get all experts
+//////////// EXPERTS API //////// TASK 6.1P /////////////////// 
 app.route('/experts')
+//get all experts
 .get((req, res)=>{
   // res.sendFile(base + '/experts.html')
   Expert.find((err, expertList)=>{
@@ -174,7 +168,8 @@ app.route('/experts')
     else res.send('Deleted all experts.')
   })
 })
-//// single expert
+
+//// single expert //////
 app.route('/experts/:id')
 //retreive expert
 .get((req, res)=>{
@@ -187,30 +182,34 @@ app.route('/experts/:id')
     }
   })
 })
-//replace all resource field with PUT req. using overwrite?
+//replace all resource fields from a single expert doc with PUT req.
 .put((req, res)=>{
-  Expert.updateOne(
-    { _id: req.params.id }, //update by name
-    { $set: req.body },  // new values from all body fields
-    {overwrite: true}, //true clears other fields //*FIX* doesn't overwrite
+  Expert.update( //wont overwrite doc with updateOne
+    { _id: req.params.id }, 
+    { name: req.body.name, //specify each to overwrite
+      address: req.body.address,
+      mobile: req.body.mobile,
+      password: req.body.password},
+      // __v: __v +1 },
+    {overwrite: true }, //true clears other fields otherwise field is null (need for PUT)
     (err)=>{  
       if (err) res.send(err)
       else res.send(`Expert Replaced`)
     }  
   )
 })
-//update single expert fields
+//update specific fields for single expert
 .patch((req, res)=>{
   Expert.updateOne(
     { _id: req.params.id }, // search by id
-    { $set: req.body },  // updates all fields in body of req.
+    { $set: req.body },  // updates all fields populated in body of req. 
     (err)=>{
       if (err) res.send(err)
       else res.send(`Expert Updated`)
     }  
   )
 })
-//remove first match expert
+//delete first match expert
 .delete((req, res)=>{
   let id = req.params.id
   Expert.deleteOne({_id: id}, (err)=>{
@@ -233,15 +232,17 @@ app.route('/expertsmany/:name')
 })
 //////END EXPERTS---------------
 
-///TASKS///////////////////
+///TASKS API////////////////////////////////////////
 app.route('/tasks')
-.get((req, res)=>{ //get all tasks
+//get all tasks
+.get((req, res)=>{ 
   Task.find((err, taskList)=>{
     if(err) res.send(err)
     else res.json(taskList)
   })
 })
-.post((req, res)=>{ //post new task
+//post new task
+.post((req, res)=>{ 
   const newTask = new Task({ 
     title: req.body.title,
     description: req.body.description,
@@ -258,8 +259,8 @@ app.route('/tasks')
   // res.redirect('/findtask') //how to redirect to react front end?
             //how to show react front end ?
 })
-
-app.route('/tasks/:id') //get task item
+ //get task item
+app.route('/tasks/:id')
 .get((req, res)=> { 
   console.log(req.params.id)
   Task.find({_id: req.params.id}, (err, task)=>{
@@ -270,6 +271,7 @@ app.route('/tasks/:id') //get task item
     }
   })
 })
+//update specific fields in single task 
 .patch((req, res)=> {
   Task.updateOne(
     { _id: req.params.id},
@@ -280,14 +282,24 @@ app.route('/tasks/:id') //get task item
     }
   )
 })
+.delete((req, res)=> {
+  const id = req.params.id
+  Task.deleteOne(
+    {_id: req.params.id},
+    (err)=> {
+      if (err) {res.send(err)}
+      else res.send(`deleted: ${id}`)
+    }
+  )
+})
 //END TASKS------------------
 
-//error page with catch all/////////////////
+//catch all for error page/////
 app.get('/*', (req, res)=>{
-  res.sendFile(`${base}/404.html`) //sendFile requiresd base directory
+  res.sendFile(`${base}/404.html`) 
 })
 
-//HEROKU PORT///////////////////////////////
+//HEROKU PORT//////////////////
 let port = process.env.PORT;
 if (!port) {
   port = 8080;

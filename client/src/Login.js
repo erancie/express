@@ -49,16 +49,11 @@ const Login = () => {
   }
   return (
     <div>
-      <br/><br/>
-      <br/><br/>
-      <br/><br/>
       <div class="row d-flex justify-content-center">
-
         <div class="card col-md-4 m-4 align-center">
           <article class="card-body">
           <a href="/register" class="float-right btn btn-outline-primary">Sign up</a>
-          <h4 class="card-title mb-4 mt-1">Sign in</h4>
-            
+          <h4 class="card-title mb-4 mt-1">Sign in</h4>          
             <form >
               <div class="form-group">
                 <label>Your email</label>
@@ -85,7 +80,6 @@ const Login = () => {
 
           </article>
         </div>
-
       </div>
     </div>
   )

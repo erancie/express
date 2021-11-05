@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback, nextPath } from 'react'
 import { useHistory, generatePath } from 'react-router-dom'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import Topnav from './Topnav'
+import FadeIn from 'react-fade-in/lib/FadeIn'
+import pic from './Assets/pic-place.png'
+// import Footer from './Footer'
 
 const Findtask = () => {
   const history = useHistory(); 
@@ -9,7 +12,7 @@ const Findtask = () => {
     searchTerm: '',
     suburbTerm: '',
     fromDate: '2021-10-01',
-    toDate: '2021-10-30'
+    toDate: '2021-11-30'
   })
   const handleChange = (event)=>{
     const {name, value } = event.target
@@ -32,17 +35,34 @@ const Findtask = () => {
       const path = generatePath("/findtask/:id", { id })
       history.push(path);
     }
-    let dateTime = new Date(props.date); // ISO to Date
-    let dateReadable = dateString(dateTime) // Date to String
+    const dateTime = new Date(props.date); // ISO to Date
+    const dateReadable = dateString(dateTime) // Date to String
+    const cardStyle = {
+      width: '18rem',
+    }
+    const buttonStyle = {
+      width: '50px',
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px'
+    }
+    return (
+      <Col key={props.key} onClick={()=>handleClickTask(props.id)} className='column' xs='12' md='6' lg='4' xl='3'>
+        <Card className='m-5 item-hover' style={cardStyle}>
+          <Card.Body  style={{position: 'relative'}}>
+            <Card.Title style={{fontSize: '1.8rem'}}>{props.title}</Card.Title>
+            <Card.Img src={pic} />
+            <Card.Text>{props.description}</Card.Text>
+            <Card.Text>Location: {props.suburb}</Card.Text>
+            <Card.Text className='mb-5'>Date: {dateReadable}</Card.Text>
+            <Button variant="outline-warning" style ={buttonStyle}
+                    onClick={(e) => {props.delete(e, props.id)}}>X</Button>
+                    {/* remove using parent function ^^ to alter parent state (DBTasks) */}
+          </Card.Body>
+        </Card>
 
-    return <div onClick={()=>handleClickTask(props.id)} className='column'>
-      <p>{props.title}</p>
-      <p>{props.description}</p>
-      <p>{props.suburb}</p>
-      <p>{dateReadable}</p>
-      <button onClick={(e) => {props.delete(e, props.id)}}>X</button>
-      {/* remove using parent function ^^ to alter parent state (DBTasks) */}
-    </div>
+      </Col>
+    )
   }
   //////////////////////////////////////////
   //FILTER & MAP TASKS//////////////////////
@@ -50,7 +70,7 @@ const Findtask = () => {
     const [DBTasks, setDBTasks] = useState([])   // create state for tasks
     useEffect(() => getTasks(), [])    // load tasks
     let getTasks =()=>{     // get list of tasks from db
-      fetch('http://localhost:8080/tasks')
+      fetch('/tasks')
       .then(response=> response.json() )
       .then((data) => {
         setDBTasks(data)
@@ -58,7 +78,7 @@ const Findtask = () => {
     }
     //filter for title
     const filteredTasks = DBTasks.filter((task)=>{
-      let filtered = task.title.toLowerCase().includes(props.search.toLowerCase())
+      let filtered = task.title?.toLowerCase().includes(props.search.toLowerCase())
       return filtered
     })
     //filter for suburb
@@ -80,59 +100,75 @@ const Findtask = () => {
       setDBTasks(newArray);
     }
     return ( 
-      <div className='row'>
-        {resultFilter.map((task, index) =>
-        <div> 
-          <TaskCard 
-            key = {task._id}
-            id = {task._id}
-            title = {task.title}
-            description = {task.description}
-            suburb = {task.suburb}
-            date = {task.date}
-            delete = {handleRemove} //pass function so child can delete from parent state
-          />
-        </div>
-        )}
-      </div>
+      <Container fluid>
+        <Row style={{justifyContent: 'center'}}>
+          {resultFilter.map((task, index) =>
+          <div> 
+            <TaskCard 
+              key = {task._id}
+              id = {task._id}
+              title = {task.title}
+              description = {task.description}
+              suburb = {task.suburb}
+              date = {task.date}
+              delete = {handleRemove} //pass function so child can delete from parent state
+            />
+          </div>
+          )}
+        </Row>
+      </Container>
     )
   }
 
   return (
-    <div>
+    <div className='find-task'>
         <Topnav />
-        <br/><br/><br/><br/>
-        <input          
-          onChange = {handleChange}
-          name= {'searchTerm'}    //need name same as state property to handle complex state
-          type="text"
-          placeholder = "search title"
-          value = {findState.searchTerm}
-        />
-        <input          
-          onChange = {handleChange}
-          name = {'suburbTerm'}
-          type="text"
-          placeholder = "search suburb"
-          value = {findState.suburbTerm}
-        />
-        <input          
-          onChange = {handleChange}
-          name={'fromDate'}
-          type="date"
-          value = {findState.fromDate}
-        />
-        <input          
-          onChange = {handleChange}
-          name={'toDate'}
-          type="date"
-          value = {findState.toDate}
-        />
-        <TaskList search={findState.searchTerm} 
-                  suburb={findState.suburbTerm} 
-                  from={findState.fromDate} 
-                  to={findState.toDate}                  
-        />
+        <div className='tasks-hero'>
+          <h1>Find a task</h1>
+        </div>
+        {/* <br/><br/><br/><br/> */}
+        <Row>
+          <Col xs={12} md={2} />
+          <Col xs={12} md={4} >
+            <input           
+              onChange = {handleChange}
+              name= {'searchTerm'}    //need name same as state property to handle complex state
+              type="text"
+              placeholder = "search title"
+              value = {findState.searchTerm}
+            />
+            <input          
+              onChange = {handleChange}
+              name = {'suburbTerm'}
+              type="text"
+              placeholder = "search suburb"
+              value = {findState.suburbTerm}
+            />
+          </Col>
+          <Col xs={12} md={4} >
+            <input          
+              onChange = {handleChange}
+              name={'fromDate'}
+              type="date"
+              value = {findState.fromDate}
+            />
+            <input          
+              onChange = {handleChange}
+              name={'toDate'}
+              type="date"
+              value = {findState.toDate}
+            />
+          </Col>
+          <Col xs={12} md={2} />
+        </Row>
+        <FadeIn>
+          <TaskList search={findState.searchTerm} 
+                    suburb={findState.suburbTerm} 
+                    from={findState.fromDate} 
+                    to={findState.toDate}                  
+          />
+        </FadeIn>
+        {/* <Footer /> */}
     </div>
   )
 }
