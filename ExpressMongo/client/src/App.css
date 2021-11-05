@@ -1,0 +1,20 @@
+.App {
+  text-align: center;
+  width: 100%; 
+}
+/* careful with vw on cotainers, use % */
+
+
+
+
+
+
+
+  /* background: linear-gradient(rgba(255, 255, 255, 1), 
+                              rgba(255, 255, 255, 0)),
+              url("./Assets/hero2.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 25vh;
+  padding-bottom: 25vh; */
