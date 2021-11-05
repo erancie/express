@@ -51,10 +51,10 @@ const Taskitem =()=> {
                         <Card.Img src={pic} style={{width: '80%', boxShadow: '3px 4px 18px rgba(0, 0, 0, 0.18)'}} className='mb-3'/>
                     </Col>
                     <Col xs={12} md={5} className='py-4'>
-                        <Card.Text>Description: {task.description}</Card.Text>
+                        <Card.Text><span>Description: </span>{task.description}</Card.Text>
                         <Card.Text><span>Location: </span>{task.suburb}</Card.Text>
                         <Card.Text><span>Date: </span>{dateReadable}</Card.Text>
-                        <Card.Text>Type: {task.type}</Card.Text>
+                        <Card.Text><span>Type: </span>{task.type}</Card.Text>
                         <Card.Text><span>Budget: </span> ${task.budgetamount} {task.budgettype}</Card.Text>
                     </Col>
                     <Col xs={12} md={1} />
