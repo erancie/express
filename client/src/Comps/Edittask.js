@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react'
 import FadeIn from 'react-fade-in';
 import { generatePath, useHistory } from 'react-router'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
+import axios from 'axios';
 
 const Edittask = (props) => {
   const history = useHistory(); 
@@ -37,6 +38,20 @@ const Edittask = (props) => {
     .catch(err => {
         console.log("Error:" + err) //why saying error, patch works
     })
+    history.push(generatePath(`/findtask`));
+  }
+  const handleDelete =()=>{
+    axios.delete
+    // fetch(`/tasks/${props.task._id}`, {
+    //   method: "DELETE",  
+    //   headers: {    "Content-type": "application/json"  }  
+    // }) 
+    // .then(response => {    console.log(response.status);     
+    //   return response.json();  })  
+    // .then(data => console.log(data)) 
+    // .catch(err => {
+    //     console.log("Error:" + err) 
+    // })
     history.push(generatePath(`/findtask`));
   }
   return (
@@ -78,7 +93,12 @@ const Edittask = (props) => {
             </div>
           </Col>
           <Col sm={12} md={3}>
-            <Button className='p-3 m-5' variant='outline-success' onClick={handleClick} >CHANGE</Button>
+            <div>
+              <Button className='p-3 m-5' variant='outline-success' onClick={handleClick} >CHANGE</Button>
+            </div>
+            <div>
+              <Button className='p-3 m-5' variant='outline-danger' onClick={handleDelete} >DELETE</Button>
+            </div>
           </Col>
         </Row>
       </FadeIn>
