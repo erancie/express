@@ -40,20 +40,20 @@ const Edittask = (props) => {
     })
     history.push(generatePath(`/findtask`));
   }
-  const handleDelete =()=>{
-    axios.delete
-    // fetch(`/tasks/${props.task._id}`, {
-    //   method: "DELETE",  
-    //   headers: {    "Content-type": "application/json"  }  
-    // }) 
-    // .then(response => {    console.log(response.status);     
-    //   return response.json();  })  
-    // .then(data => console.log(data)) 
-    // .catch(err => {
-    //     console.log("Error:" + err) 
-    // })
-    history.push(generatePath(`/findtask`));
-  }
+  // const handleDelete =()=>{
+  //   axios.delete
+  //   // fetch(`/tasks/${props.task._id}`, {
+  //   //   method: "DELETE",  
+  //   //   headers: {    "Content-type": "application/json"  }  
+  //   // }) 
+  //   // .then(response => {    console.log(response.status);     
+  //   //   return response.json();  })  
+  //   // .then(data => console.log(data)) 
+  //   // .catch(err => {
+  //   //     console.log("Error:" + err) 
+  //   // })
+  //   history.push(generatePath(`/findtask`));
+  // }
   return (
     <div id='editTask' className='find-task'>
       <hr/>
@@ -96,9 +96,9 @@ const Edittask = (props) => {
             <div>
               <Button className='p-3 m-5' variant='outline-success' onClick={handleClick} >CHANGE</Button>
             </div>
-            <div>
+            {/* <div>
               <Button className='p-3 m-5' variant='outline-danger' onClick={handleDelete} >DELETE</Button>
-            </div>
+            </div> */}
           </Col>
         </Row>
       </FadeIn>
