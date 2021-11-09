@@ -32,21 +32,17 @@ app.use(cors())
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
-//static declaration - point to react client
+//React Routes
+//static declaration - point to built files in react client
 app.use(express.static(path.join(__dirname, 'client/build')));
-// app.use(express.static('public')); 
-// app.use(express.static('client/build'));
+app.use('/login', express.static(path.join(__dirname, 'client/build')));
+app.use('/register', express.static(path.join(__dirname, 'client/build')));
+app.use('/experts', express.static(path.join(__dirname, 'client/build')));
+app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
+app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 
-//build mode
-// app.get('*', (req, res) => {  
-//   res.sendFile(path.join(__dirname+'/client/public/index.html'))
-// })
 
-// app.get('/', (req, res)=> { 
-//   // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-//   res.send("iService API")
-// })
-
+///////////////////////// ***API*** ////////////////////////////////////
 ///////////////////  //find user according to email 
 // LOGIN //////////  //if exists, compare form password to user password 
 app.post('/login', (req, res)=> { 

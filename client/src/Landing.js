@@ -26,7 +26,11 @@ class Landing extends Component {
           <h1>Have full confidence with comprehensive reviews and contact information.</h1>
         </div>
         <FcSerialTasks color={'f46f30'} size={140} />
-        {/* <h1>.env- {process.env.REACT_APP_TEST}</h1> */}
+
+        <h1>process.env</h1>
+        <h1>.REACT_APP_TEST - {process.env.REACT_APP_TEST}</h1>
+        <h1>.NODE - {process.env.NODE}</h1>
+        
         <h1 className='featured'>Featured Experts</h1>
         <Featuredexperts />
         <Footer />
