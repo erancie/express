@@ -32,15 +32,15 @@ app.use(cors())
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
-//static file decalration
+//static declaration - point to react client
 app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use(express.static('public')); 
 // app.use(express.static('client/build'));
 
 //build mode
-app.get('*', (req, res) => {  
-  res.sendFile(path.join(__dirname+'/client/public/index.html'))
-})
+// app.get('*', (req, res) => {  
+//   res.sendFile(path.join(__dirname+'/client/public/index.html'))
+// })
 
 // app.get('/', (req, res)=> { 
 //   // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
