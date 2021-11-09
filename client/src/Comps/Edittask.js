@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const Edittask = (props) => {
   const history = useHistory(); 
+  const [redirect, setRedirect] = useState(false)
 
   const [newVals, setNewVals] = useState({
     title: props.task.title,
@@ -27,27 +28,27 @@ const Edittask = (props) => {
     })
     console.log(`name: ${name} value: ${value}`)
   }
-  const handleClick =()=>{ //non async with fetch
+  const handleClick =()=>{ //non async redirect with fetch & reload()
     fetch(`/tasks/${props.task._id}`, {
       method: "PATCH",  
       headers: {    "Content-type": "application/json"  },  
       body: JSON.stringify(newVals)}) 
     .then(response => {    console.log(response.status);     
       return response.json();  })  
-    .then(data => console.log(data)) //no log on success - 200
-    .catch(err => {
-        console.log("Error:" + err) //why saying error, patch works
-    })
-    history.push(generatePath(`/findtask`));
+    .then(data => console.log(data))
+    .catch(err => { console.log("Error:" + err)})
+
+    window.location.reload()
   }
-  async function handleDelete () { //async with axios
+  async function handleDelete () { //async with axios & generatePath
     const res = await axios.delete(`/tasks/${props.task._id}`)
+    //instead of .then - 'await' for res
     if(res.status===200) {
       history.push(generatePath(`/findtask`))
-      console.log('task deleted')
     }
     else(console.log('error deleting task'))
   }
+
   return (
     <div id='editTask' className='find-task'>
       <hr/>
