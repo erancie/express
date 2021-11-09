@@ -27,7 +27,7 @@ const Edittask = (props) => {
     })
     console.log(`name: ${name} value: ${value}`)
   }
-  const handleClick =()=>{
+  const handleClick =()=>{ //non async with fetch
     fetch(`/tasks/${props.task._id}`, {
       method: "PATCH",  
       headers: {    "Content-type": "application/json"  },  
@@ -40,20 +40,14 @@ const Edittask = (props) => {
     })
     history.push(generatePath(`/findtask`));
   }
-  // const handleDelete =()=>{
-  //   axios.delete
-  //   // fetch(`/tasks/${props.task._id}`, {
-  //   //   method: "DELETE",  
-  //   //   headers: {    "Content-type": "application/json"  }  
-  //   // }) 
-  //   // .then(response => {    console.log(response.status);     
-  //   //   return response.json();  })  
-  //   // .then(data => console.log(data)) 
-  //   // .catch(err => {
-  //   //     console.log("Error:" + err) 
-  //   // })
-  //   history.push(generatePath(`/findtask`));
-  // }
+  async function handleDelete () { //async with axios
+    const res = await axios.delete(`/tasks/${props.task._id}`)
+    if(res.status===200) {
+      history.push(generatePath(`/findtask`))
+      console.log('task deleted')
+    }
+    else(console.log('error deleting task'))
+  }
   return (
     <div id='editTask' className='find-task'>
       <hr/>
@@ -96,9 +90,9 @@ const Edittask = (props) => {
             <div>
               <Button className='p-3 m-5' variant='outline-success' onClick={handleClick} >CHANGE</Button>
             </div>
-            {/* <div>
+            <div>
               <Button className='p-3 m-5' variant='outline-danger' onClick={handleDelete} >DELETE</Button>
-            </div> */}
+            </div>
           </Col>
         </Row>
       </FadeIn>

@@ -10,7 +10,7 @@ const Task = require('./models/Task');
 const bcrypt = require('bcrypt');
 const { send } = require('process');
 const cors = require("cors");
-const { findById } = require('./models/User');
+require('dotenv').config()
 
 
 //MONGOOSE////////////////////
@@ -28,11 +28,16 @@ let app = express();
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(cors())
 //makes things static from html (like css path)
-app.use(express.static('public')); 
+// app.use(express.static('public')); 
+// app.use(express.static('client/build'));
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
-app.get('/', (req, res)=> { res.send('iService API') })
+app.get('/', (req, res)=> { 
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+})
 
 ///////////////////  //find user according to email 
 // LOGIN //////////  //if exists, compare form password to user password 
@@ -306,4 +311,5 @@ if (!port) {
 
 app.listen(port, (req, res)=>{
   console.log(`Server is running on port: ${port}`);
+  console.log(process.env.REACT_APP_TEST)
 }) 
