@@ -11,6 +11,8 @@ const bcrypt = require('bcrypt');
 const { send } = require('process');
 const cors = require("cors");
 require('dotenv').config()
+const path = require('path');
+
 
 
 //MONGOOSE////////////////////
@@ -27,17 +29,23 @@ db.once('open', function() {
 let app = express();
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(cors())
-//makes things static from html (like css path)
-// app.use(express.static('public')); 
-// app.use(express.static('client/build'));
-app.use(express.static(path.join(__dirname, 'client/build')));
-
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
-app.get('/', (req, res)=> { 
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//static file decalration
+app.use(express.static(path.join(__dirname, 'client/build')));
+// app.use(express.static('public')); 
+// app.use(express.static('client/build'));
+
+//build mode
+app.get('*', (req, res) => {  
+  res.sendFile(path.join(__dirname+'/client/public/index.html'))
 })
+
+// app.get('/', (req, res)=> { 
+//   // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//   res.send("iService API")
+// })
 
 ///////////////////  //find user according to email 
 // LOGIN //////////  //if exists, compare form password to user password 
