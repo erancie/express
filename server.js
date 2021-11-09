@@ -38,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
 app.use('/experts', express.static(path.join(__dirname, 'client/build')));
+app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 
