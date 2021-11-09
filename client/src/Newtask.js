@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { Form, Button, Container, Col, Row } from 'react-bootstrap'
 import Topnav from './Topnav'
 import FadeIn from 'react-fade-in/lib/FadeIn'
-// import { Fade } from 'react-bootstrap'
-// import { default as Fade } from 'react-fade'
+import { useHistory, generatePath } from 'react-router'
 
 const Newtask = () => {
-
+  const history = useHistory(); 
   const today = new Date()
   console.log(`today: ${today}`)
 
@@ -57,6 +56,7 @@ const Newtask = () => {
     .catch(err => {
         console.log("Error:" + err)
     })
+    history.push(generatePath('/findtask'))
   }
   const suburbInput = () => {
       return(
@@ -73,8 +73,6 @@ const Newtask = () => {
         </Form.Group>
       ) 
   }
-
-
   const title =()=>{
     if(task.type === 'online'){
       return ' - Online'
