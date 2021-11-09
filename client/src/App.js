@@ -22,7 +22,7 @@ function App() {
             <Route path="/" exact component={Landing}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
-            <Route path="/experts" component={Experts}/>
+            <Route path="/ourexperts" component={Experts}/>
             <Route path="/newtask" component={Newtask}/>
             <Route path="/findtask/:id" component={Taskitem}/>
             <Route path="/findtask" exact component={Findtask}/>

@@ -33,11 +33,11 @@ app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
 //React Routes
-//static declaration - point to built files in react client
+//Static declaration - point to built files in react client
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
-app.use('/experts', express.static(path.join(__dirname, 'client/build')));
+app.use('/ourexperts', express.static(path.join(__dirname, 'client/build')));
 app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
@@ -316,5 +316,7 @@ if (!port) {
 
 app.listen(port, (req, res)=>{
   console.log(`Server is running on port: ${port}`);
-  console.log(process.env.REACT_APP_TEST)
+  console.log('REACT_APP_TEST' + process.env.REACT_APP_TEST)
+  console.log('process.env.NODE_ENV' + process.env.NODE_ENV)
+  console.log('process.env.PORT' + process.env.PORT)
 }) 
