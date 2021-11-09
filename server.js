@@ -33,9 +33,8 @@ app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
 
-//Static declaration - point to built files in react client
+//Static declaration - point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
-//React Routes
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
 app.use('/ourexperts', express.static(path.join(__dirname, 'client/build')));
@@ -166,7 +165,9 @@ app.route('/experts')
     name: req.body.name, 
     address: req.body.address, 
     mobile: req.body.mobile, 
-    password: req.body.password}); 
+    password: req.body.password,
+    rating: req.body.rating,
+    text: req.body.text }); 
 
   expert.save((err, newExpert)=>{
     if(newExpert) res.send(newExpert)
@@ -201,7 +202,9 @@ app.route('/experts/:id')
     { name: req.body.name, //specify each to overwrite
       address: req.body.address,
       mobile: req.body.mobile,
-      password: req.body.password},
+      password: req.body.password,
+      rating: req.body.rating,
+      text: req.body.text},
       // __v: __v +1 },
     {overwrite: true }, //true clears other fields otherwise field is null (need for PUT)
     (err)=>{  
