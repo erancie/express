@@ -27,10 +27,10 @@ class Landing extends Component {
         </div>
         <FcSerialTasks color={'f46f30'} size={140} />
 
-        <h1>process.env</h1>
+        {/* <h1>process.env</h1>
         <h1>.REACT_APP_TEST - {process.env.REACT_APP_TEST}</h1>
         <h1>.NODE_ENV - {process.env.NODE_ENV}</h1>
-        <h1>.PORT - {process.env.PORT}</h1>
+        <h1>.PORT - {process.env.PORT}</h1> */}
         
         <h1 className='featured'>Featured Experts</h1>
         <Featuredexperts />

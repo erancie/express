@@ -32,9 +32,10 @@ app.use(cors())
 app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
-//React Routes
+
 //Static declaration - point to built files in react client
 app.use(express.static(path.join(__dirname, 'client/build')));
+//React Routes
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
 app.use('/ourexperts', express.static(path.join(__dirname, 'client/build')));
