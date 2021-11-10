@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import '../css/main.css'
 import Topnav from '../Topnav'
 import Featuredexperts from './Featuredexperts'
-import Footer from '../Footer'
-
 
 class Experts extends Component {
   render() {
@@ -16,7 +14,6 @@ class Experts extends Component {
         </div>
 
         <Featuredexperts />
-        <Footer />
       </div>
     )
   }

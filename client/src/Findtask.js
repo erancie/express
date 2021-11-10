@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback, nextPath } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory, generatePath } from 'react-router-dom'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import Topnav from './Topnav'
 import FadeIn from 'react-fade-in/lib/FadeIn'
 import pic from './Assets/pic-place.png'
-// import Footer from './Footer'
 
 const Findtask = () => {
   const history = useHistory(); 
@@ -168,7 +167,6 @@ const Findtask = () => {
                     to={findState.toDate}                  
           />
         </FadeIn>
-        {/* <Footer /> */}
     </div>
   )
 }

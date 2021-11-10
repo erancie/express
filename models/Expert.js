@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// import {Image} from 'mongoose'
 
 const expertSchema = new mongoose.Schema(
   {
