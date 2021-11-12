@@ -5,6 +5,7 @@ import Featuredexperts from './Comps/Featuredexperts'
 import Footer from './Footer'
 import FadeIn from 'react-fade-in/lib/FadeIn'
 import {FcParallelTasks, FcSerialTasks} from 'react-icons/fc'
+import { AiFillAliwangwang } from 'react-icons/ai'
 
 class Landing extends Component {
   render() {
@@ -26,6 +27,7 @@ class Landing extends Component {
           <h1>Have full confidence with comprehensive reviews and contact information.</h1>
         </div>
         <FcSerialTasks color={'f46f30'} size={140} />
+        <AiFillAliwangwang color={'f46f30'} size={140} />
 
         {/* <h1>process.env</h1>
         <h1>.REACT_APP_TEST - {process.env.REACT_APP_TEST}</h1>
