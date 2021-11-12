@@ -18,7 +18,7 @@ class Landing extends Component {
         </div>
         <FadeIn>
           <div className='my-5 hero2'>
-            <h1>Explore the iService platform to get the right fit for the job.</h1>
+            <h1>Explore the iService platform to get the right fit for the job!</h1>
           </div>
           <FcParallelTasks color={'f46f30'} size={140} style={{marginBottom: '200px'}} />
         </FadeIn>
