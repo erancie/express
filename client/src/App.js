@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'; 
 import Landing from './Landing';
 import Newtask from './Newtask'
 import Findtask from './Findtask';
