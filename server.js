@@ -15,7 +15,7 @@ const path = require('path');
 //Test*************** ////////
 
 //MONGOOSE////////////////////
-const uri = `mongodb+srv://admin-elliot:deakin2021@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://admin-elliot:${process.env.MONGO_PW}@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
 // const uri = 'mongodb://localhost:27017/itrust';
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -35,6 +35,7 @@ const base= `${__dirname}/public`;
 //Static declaration - point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
+app.use('/login2', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
 app.use('/ourexperts', express.static(path.join(__dirname, 'client/build')));
 app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
@@ -102,9 +103,9 @@ app.post('/users', (req, res)=> { //change to /users
       let {firstname, lastname, email} = req.body;
       console.log(firstname, lastname, email);
       //mailchimp api key
-      const apiKey = '4cf53003ebc05f4c27f8a03b9338c6fa-us5';
+      const apiKey = process.env.MAILCHIMP_KEY;
       //mailchimp audience/list id
-      const listId = '5f7ec9e7d7';
+      const listId = process.env.LIST_ID;
       //url to your list
       const url = `https://us5.api.mailchimp.com/3.0/lists/${listId}`
       const options = {
@@ -319,7 +320,5 @@ if (!port) {
 
 app.listen(port, (req, res)=>{
   console.log(`Server is running on port: ${port}`);
-  console.log('REACT_APP_TEST' + process.env.REACT_APP_TEST)
-  console.log('process.env.NODE_ENV' + process.env.NODE_ENV)
-  console.log('process.env.PORT' + process.env.PORT)
+  console.log('process.env.PORT: ' + process.env.PORT)
 }) 
