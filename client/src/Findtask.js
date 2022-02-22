@@ -30,8 +30,7 @@ const Findtask = () => {
   // TASK CARD ////////////////////////
   const TaskCard =(props)=> {
     const handleClickTask = (id) => { 
-      console.log(`from clicked task - ${id}`)
-      const path = generatePath("/findtask/:id", { id })
+      const path = generatePath(`/findtask/${id}`)
       history.push(path);
     }
     const dateTime = new Date(props.date); // ISO to Date
@@ -75,18 +74,14 @@ const Findtask = () => {
         setDBTasks(data)
       })
     }
-    //filter for title
-    const filteredTasks = DBTasks.filter((task)=>{
-      let filtered = task.title?.toLowerCase().includes(props.search.toLowerCase())
-      return filtered
+    
+    const filteredTasks = DBTasks.filter((task)=>{ //filter for title
+      return task.title?.toLowerCase().includes(props.search.toLowerCase())
     })
-    //filter for suburb
-    const intersection = filteredTasks.filter((task) => {
-      let filtered = task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
-      return filtered
+    .filter((task) => {     //filter for suburb
+      return task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
     })
-    //filter for date
-    let resultFilter = intersection.filter((task) => {
+    .filter((task) => {     //filter for date
       let date = new Date(task.date);//ISO to Date
       let from = new Date(findState.fromDate)//String to Date
       let to = new Date(findState.toDate)
@@ -101,7 +96,7 @@ const Findtask = () => {
     return ( 
       <Container fluid>
         <Row style={{justifyContent: 'center'}}>
-          {resultFilter.map((task, index) =>
+          {filteredTasks.map((task, index) =>
           <div> 
             <TaskCard 
               key = {task._id}

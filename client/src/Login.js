@@ -13,13 +13,18 @@ const Login = () => {
   })
   const [redirect, setRedirect] = useState(false)
 
-  //HANDLE INPUT CHANGE
+  //HANDLE INPUT CHANGE (from all inputs)
   const handleChange = (event)=>{
-    const {name, value} = event.target
-    setLogin ((preValue)=>{  
+    const {name, value} = event.target //get input name and value from event
+    setLogin ((preValue)=>{  //pass in prev vals
       return {
-        ...preValue,
-        [name]: value
+        ...preValue, //include previous values
+        //declare dynamic property according to input name
+        [name]: value,      //dynamic property - declared inside obj lit
+        // ['name']: value, //static property in object lits use the string 'name'
+        // name: value      //static property in object lits use the string 'name'
+
+        //NOTE: Use brackets inside object literals to adign property names dynamically
       }
     })
     console.log(`register: ${login}`)

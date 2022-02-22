@@ -32,7 +32,8 @@ app.use(bodyParser.json())
 const base= `${__dirname}/public`;
 
 
-//Static declaration - point to built files in React client
+// - Static declaration -
+//Redirect these paths and point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/login2', express.static(path.join(__dirname, 'client/build')));
@@ -47,6 +48,7 @@ app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 ///////////////////  //find user according to email 
 // LOGIN //////////  //if exists, compare form password to user password 
 app.post('/login', (req, res)=> { 
+  console.log(this)
   const {email, password} = req.body;
   User.findOne({ email: email}, (e, user)=>{
     if (e) { res.send("No such email.") }    //*FIX*- handle no email err
@@ -69,15 +71,15 @@ app.post('/login', (req, res)=> {
 
 
 ///// USERS API //////////////////////////////
-app.get('/users', (req,res)=>{
+app.get('/users', (req, res)=>{
   User.find({}, (err, users)=>{
-    if(err) send(err)
+    if(err) res.send(err)
     else res.send(users)
   })
 })
 
 //- USER Registration //
-app.post('/users', (req, res)=> { //change to /users
+app.post('/users', (req, res)=> { 
   //create new user from body fields
   const newUser = new User({
     firstname: req.body.firstname,
@@ -272,8 +274,9 @@ app.route('/tasks')
   .catch((err)=> console.log(err))
   res.json((`task saved to db: ${newTask}`))
 })
- //get task item
+
 app.route('/tasks/:id')
+//get single task
 .get((req, res)=> { 
   console.log(req.params.id)
   Task.find({_id: req.params.id}, (err, task)=>{
