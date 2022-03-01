@@ -38,6 +38,7 @@ const base= `${__dirname}/public`;
 
 // - Static declaration -
 //Redirect these paths and point to built files in React client
+//https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/login2', express.static(path.join(__dirname, 'client/build')));
