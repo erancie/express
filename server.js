@@ -36,10 +36,9 @@ app.use(bodyParser.json())
 
 const base= `${__dirname}/public`;
 
-// - Static declaration -
-//Redirect these paths and point to built files in React client
-
+// - Static declaration - point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
+
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/login2', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
@@ -48,7 +47,9 @@ app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 
-// see below link for info serving apps with client side routing
+// or see catch all at l.254 for ^^^ front end pages
+
+// see below link for info re serving apps with client side routing
 // https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing
 
 
@@ -231,7 +232,6 @@ app.route('/tasks/:id')
   )
 })
 .delete((req, res)=> {
-  const id = req.params.id
   Task.deleteOne(
     {_id: req.params.id},
     (err)=> {
@@ -241,6 +241,11 @@ app.route('/tasks/:id')
   )
 })
 //END TASKS------------------
+
+//in case client routes other than / are navigated to without react <Link to=...
+// app.get('(/*)?', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+// });
 
 //catch all for error page/////
 app.get('/*', (req, res)=>{
