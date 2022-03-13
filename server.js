@@ -34,11 +34,24 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
 app.use(bodyParser.json())
 
-const base= `${__dirname}/public`;
+const base = `${__dirname}/public`;
 
-// - Static declaration - point to built files in React client
+
+// - Static declaration - 
+app.use(express.static('public'))
+
+// point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+
+
+//This ^ will point to the entry point of the app and
+//all subsequent navigations are handled by react-router.
+//However, if the user wants to start at another front end route
+//then the initial request for those routes will ALSO have to be 
+//caught/handled by the server and redirected back to the client.
+
+//list all other front end routes in case they navigate there first
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/login2', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
@@ -47,7 +60,7 @@ app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 
-// or see catch all at l.254 for ^^^ front end pages
+// or see catch all at l.254 to handle all front end pages other than 'home'
 
 // see below link for info re serving apps with client side routing
 // https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing

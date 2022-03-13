@@ -40,6 +40,8 @@ import './css/main.css'
   const handleSubmit = (e) => {
     e.preventDefault()
     axios.post('/users', register)
+    //if absolute 'http://' path not provided (like in development)
+    //spa will use a relative path from the served domain root. (even though it sits in client/build)
     .then(res => {
       if (res.data.success) {setRedirect(true)}
     },
