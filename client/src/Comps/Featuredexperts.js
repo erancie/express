@@ -10,7 +10,7 @@ import avatar from '../Assets/avatar.jpg'
   useEffect(() => getExperts(), [])  
 
   const getExperts =()=>{  
-    fetch('/experts')
+    fetch('experts')
     .then(response=> response.json() )
     .then((data) => {
       setExperts(data)

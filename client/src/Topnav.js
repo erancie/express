@@ -15,7 +15,7 @@ export default class Topnav extends Component {  //Child Class
       <div>
         <Navbar fixed="top" bg="light" expand="lg">
           <Container>
-            <Navbar.Brand href="/">
+            <Navbar.Brand as={Link} to="/">
               <BiGlobeAlt className='logo' color={'f46f30'} size={40} />
               <Navbar.Text class='brand'> iService</Navbar.Text>
               {/* <span class='brand'> iService</span> */}
@@ -26,7 +26,7 @@ export default class Topnav extends Component {  //Child Class
                 {/*How do I use these links without refreshing the page?
                   they are currently sending a request to the server 
                   and then being routed back to the client.
-                  How to keep the link within the client
+                  How to keep the link within the client?
                   
                   Answer: use 'to' attribute instead of 'href' to use spa routing and prevent from refreshing 
                   Also see: https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together

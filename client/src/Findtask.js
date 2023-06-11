@@ -81,17 +81,18 @@ const Findtask = () => {
       return filtered
     })
     //filter for suburb
-    const intersection = filteredTasks.filter((task) => {
+    .filter((task) => {
       let filtered = task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
       return filtered
     })
     //filter for date
-    let resultFilter = intersection.filter((task) => {
+    .filter((task) => {
       let date = new Date(task.date);//ISO to Date
       let from = new Date(findState.fromDate)//String to Date
       let to = new Date(findState.toDate)
       if (date >= from && date <= to)
-       return task 
+       return true
+      return false
     });
     const handleRemove = function(e, id) { 
       e.stopPropagation()
@@ -101,8 +102,8 @@ const Findtask = () => {
     return ( 
       <Container fluid>
         <Row style={{justifyContent: 'center'}}>
-          {resultFilter.map((task, index) =>
-          <div> 
+          {filteredTasks.map((task, index) =>
+          <div>
             <TaskCard 
               key = {task._id}
               id = {task._id}
@@ -111,6 +112,10 @@ const Findtask = () => {
               suburb = {task.suburb}
               date = {task.date}
               delete = {handleRemove} //pass function so child can delete from parent state
+              
+              //how would you associate the owner of the task?
+              //inlude owner id on posting..
+
             />
           </div>
           )}

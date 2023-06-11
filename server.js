@@ -12,11 +12,8 @@ const cors = require("cors");
 require('dotenv').config()
 const path = require('path');
 const passport = require('passport');
-
 const users = require('./routes/users');
 
-
-//Test*************** ////////
 
 //MONGOOSE////////////////////
 const uri = `mongodb+srv://admin-elliot:${process.env.MONGO_PW}@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
@@ -36,14 +33,33 @@ app.use(bodyParser.json())
 
 const base = `${__dirname}/public`;
 
+//Static files are served to the browser on the first load
+
+//Both 
+//API Endpoint Routes 
+//& 
+//Static Files 
+//are accessible to the browser from the domian root
+
+
+//Static files are generally held somewhere other than the root directory on the server machine's file system
+
+//However, they are made available in the root web address directory from a browser
+
+//Thats why when any relative path API request is made from client code, it needs to start from the web root and not where its held in the server's file system 
+
+
+
+//When static files are declared __dirname is used with a relative path to locate them according to the current working directory on the executing environment's file system
+//This way, no matter what operating environment the server files are located in, the right files will be gathered and sent to the browser
+
+
 
 // - Static declaration - 
 app.use(express.static('public'))
 
 // point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
-
-
 
 //This ^ will point to the entry point of the app and
 //all subsequent navigations are handled by react-router.
@@ -64,6 +80,7 @@ app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
 
 // see below link for info re serving apps with client side routing
 // https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing
+
 
 
 ///////////////////////// ***API*** ////////////////////////////////////
@@ -265,7 +282,7 @@ app.get('/*', (req, res)=>{
   res.sendFile(`${base}/404.html`) 
 })
 
-//HEROKU PORT//////////////////
+// ASSIGN PORT //////////////////
 let port = process.env.PORT;
 if (!port) {
   port = 8080;
@@ -285,3 +302,17 @@ app.listen(port, (req, res)=>{
     //get record from db
 
     //compare password using bcrypt
+
+
+
+// // Node.js program to demonstrate the
+// // methods to display directory
+   
+// // Include path module
+// var path = require("path");
+  
+// // Methods to display directory
+// console.log("__dirname:    ", __dirname);
+// console.log("process.cwd() : ", process.cwd());
+// console.log("./ : ", path.resolve("./"));
+// console.log("filename: ", __filename);
