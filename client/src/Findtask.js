@@ -30,7 +30,8 @@ const Findtask = () => {
   // TASK CARD ////////////////////////
   const TaskCard =(props)=> {
     const handleClickTask = (id) => { 
-      const path = generatePath(`/findtask/${id}`)
+      console.log(`from clicked task - ${id}`)
+      const path = generatePath("/findtask/:id", { id })
       history.push(path);
     }
     const dateTime = new Date(props.date); // ISO to Date
@@ -74,14 +75,18 @@ const Findtask = () => {
         setDBTasks(data)
       })
     }
-    
-    const filteredTasks = DBTasks.filter((task)=>{ //filter for title
-      return task.title?.toLowerCase().includes(props.search.toLowerCase())
+    //filter for title
+    const filteredTasks = DBTasks.filter((task)=>{
+      let filtered = task.title?.toLowerCase().includes(props.search.toLowerCase())
+      return filtered
     })
-    .filter((task) => {     //filter for suburb
-      return task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
+    //filter for suburb
+    .filter((task) => {
+      let filtered = task.suburb?.toLowerCase().includes(props.suburb.toLowerCase()) //? nullchecker
+      return filtered
     })
-    .filter((task) => {     //filter for date
+    //filter for date
+    .filter((task) => {
       let date = new Date(task.date);//ISO to Date
       let from = new Date(findState.fromDate)//String to Date
       let to = new Date(findState.toDate)
@@ -98,7 +103,7 @@ const Findtask = () => {
       <Container fluid>
         <Row style={{justifyContent: 'center'}}>
           {filteredTasks.map((task, index) =>
-          <div> 
+          <div>
             <TaskCard 
               key = {task._id}
               id = {task._id}
