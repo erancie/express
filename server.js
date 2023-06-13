@@ -11,8 +11,9 @@ const { send } = require('process');
 const cors = require("cors");
 require('dotenv').config()
 const path = require('path');
+const passport = require('passport');
+const users = require('./routes/users');
 
-//Test*************** ////////
 
 //MONGOOSE////////////////////
 const uri = `mongodb+srv://admin-elliot:${process.env.MONGO_PW}@main.hzw1z.mongodb.net/main?retryWrites=true&w=majority`;
@@ -20,21 +21,56 @@ const uri = `mongodb+srv://admin-elliot:${process.env.MONGO_PW}@main.hzw1z.mongo
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('main db connected');
-});
+db.once('open', ()=>console.log('main db connected') )
 
 //EXPRESS////////////////
 let app = express();
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(cors())
 app.use(bodyParser.json())
-const base= `${__dirname}/public`;
 
+const base = `${__dirname}/public`;
 
+<<<<<<< HEAD
 // - Static declaration -
 //Redirect these paths and point to built files in React client
+=======
+//Static files are served to the browser on the first load
+
+//Both 
+//API Endpoint Routes 
+//& 
+//Static Files 
+//are accessible to the browser from the domian root
+
+
+//Static files are generally held somewhere other than the root directory on the server machine's file system
+
+//However, they are made available in the root web address directory from a browser
+
+//Thats why when any relative path API request is made from client code, it needs to start from the web root and not where its held in the server's file system 
+
+
+
+//When static files are declared __dirname is used with a relative path to locate them according to the current working directory on the executing environment's file system
+//This way, no matter what operating environment the server files are located in, the right files will be gathered and sent to the browser
+
+
+
+// - Static declaration - 
+// app.use(express.static('public'))
+
+// point to built files in React client
+>>>>>>> pass
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+//This ^ will point to the entry point of the app and
+//all subsequent navigations are handled by react-router.
+//However, if the user wants to start at another front end route
+//then the initial request for those routes will ALSO have to be 
+//caught/handled by the server and redirected back to the client.
+
+//list all other front end routes in case they navigate there first
 app.use('/login', express.static(path.join(__dirname, 'client/build')));
 app.use('/login2', express.static(path.join(__dirname, 'client/build')));
 app.use('/register', express.static(path.join(__dirname, 'client/build')));
@@ -42,6 +78,12 @@ app.use('/ourexperts', express.static(path.join(__dirname, 'client/build')));
 app.use('/newtask', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask/:id', express.static(path.join(__dirname, 'client/build')));
 app.use('/findtask', express.static(path.join(__dirname, 'client/build')));
+
+// or see catch all at l.254 to handle all front end pages other than 'home'
+
+// see below link for info re serving apps with client side routing
+// https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing
+
 
 
 ///////////////////////// ***API*** ////////////////////////////////////
@@ -71,6 +113,7 @@ app.post('/login', (req, res)=> {
 
 
 ///// USERS API //////////////////////////////
+<<<<<<< HEAD
 app.get('/users', (req, res)=>{
   User.find({}, (err, users)=>{
     if(err) res.send(err)
@@ -150,6 +193,11 @@ app.delete('/users', (req, res)=>{
   })
 })
 //END USERS---------------------------------------------
+=======
+//for all http requests to /users path use() the users router
+app.use('/users', users)
+
+>>>>>>> pass
 
 //////////// EXPERTS API //////// TASK 6.1P /////////////////// 
 app.route('/experts')
@@ -299,7 +347,6 @@ app.route('/tasks/:id')
   )
 })
 .delete((req, res)=> {
-  const id = req.params.id
   Task.deleteOne(
     {_id: req.params.id},
     (err)=> {
@@ -310,12 +357,17 @@ app.route('/tasks/:id')
 })
 //END TASKS------------------
 
+//in case client routes other than / are navigated to without react <Link to=...
+// app.get('(/*)?', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+// });
+
 //catch all for error page/////
 app.get('/*', (req, res)=>{
   res.sendFile(`${base}/404.html`) 
 })
 
-//HEROKU PORT//////////////////
+// ASSIGN PORT //////////////////
 let port = process.env.PORT;
 if (!port) {
   port = 8080;
@@ -325,3 +377,27 @@ app.listen(port, (req, res)=>{
   console.log(`Server is running on port: ${port}`);
   console.log('process.env.PORT: ' + process.env.PORT)
 }) 
+
+
+
+//create a local strategy for passport
+
+  //verify username and password
+
+    //get record from db
+
+    //compare password using bcrypt
+
+
+
+// // Node.js program to demonstrate the
+// // methods to display directory
+   
+// // Include path module
+// var path = require("path");
+  
+// // Methods to display directory
+// console.log("__dirname:    ", __dirname);
+// console.log("process.cwd() : ", process.cwd());
+// console.log("./ : ", path.resolve("./"));
+// console.log("filename: ", __filename);

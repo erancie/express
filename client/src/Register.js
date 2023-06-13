@@ -40,6 +40,17 @@ import './css/main.css'
   const handleSubmit = (e) => {
     e.preventDefault()
     axios.post('/users', register)
+    //spa client code navigating to another client view using 'to=' instead of 'href' will be caught by the react router instead of requesting the server API directly
+    //spa client code requesting internal API resources (JSON) via http will be handled by server side API routes
+
+    //Spa client code will use
+    //an absolute path for requesting External API resources ie.  - 'http://' 
+    //a root relative path from the domain root in the browser for requesting internal API resources. 
+        //(even though it sits in client/build on the server environment)
+        //
+        //all client side code will use the web root for relative http request paths 
+
+        //SEE: https://www.youtube.com/watch?v=fZjKc2kMKYU 
     .then(res => {
       if (res.data.success) {setRedirect(true)}
     },
@@ -47,6 +58,7 @@ import './css/main.css'
   }
   if (redirect) {
     return <Redirect to='/login'/>;
+
   }
   return (
     <div className="left">

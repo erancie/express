@@ -41,12 +41,17 @@ const Edittask = (props) => {
     window.location.reload()
   }
   async function handleDelete () { //async with axios & generatePath
-    const res = await axios.delete(`/tasks/${props.task._id}`)
-    //instead of .then - 'await' for res
-    if(res.status===200) {
-      history.push(generatePath(`/findtask`))
+    try {
+      const res = await axios.delete(`/tasks/${props.task._id}`)
+      //instead of .then - 'await' for res
+      if(res.status===200) {
+        history.push(generatePath(`/findtask`))
+      }
+    } catch (error) {
+      console.log('error deleting task: '+ error)
     }
-    else(console.log('error deleting task'))
+
+    // else { console.log('error deleting task') }
   }
 
   return (

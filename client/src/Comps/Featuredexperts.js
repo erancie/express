@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import FadeIn from 'react-fade-in/lib/FadeIn';
-import avatar from '../Assets/avatar.jpg'
+// import avatar from '../Assets/avatar.jpg'
+import prof1 from '../Assets/prof1.webp'
+import prof2 from '../Assets/prof2.webp'
+import prof3 from '../Assets/prof3.webp'
+import prof4 from '../Assets/prof4.webp'
+import prof5 from '../Assets/prof5.webp'
+import prof6 from '../Assets/prof6.webp'
 
  const Featuredexperts = () => {
 
   const [experts, setExperts] = useState([])
 
+  const [ avatar ] = useState([prof3, prof5, prof4, prof2, prof1, prof6])
+
   useEffect(() => getExperts(), [])  
 
   const getExperts =()=>{  
-    fetch('/experts')
+    fetch('experts')
     .then(response=> response.json() )
     .then((data) => {
       setExperts(data)
@@ -19,13 +27,19 @@ import avatar from '../Assets/avatar.jpg'
   }
 
   const MapExpertCards = () => {
-    const cards = experts.map((expert)=>{ //replace with () for implicit return
-      return( // or explicit 'return' required for .map() 
+    const cards = [];
+    experts.forEach((expert, i)=>{ 
+      //replace with just () for implicit return
+      // return( // or explicit 'return' required for .map() 
+      cards.push(
         <Col key={expert._id.toString()} xs='12' md='6' lg='4' xl='3'>
           <FadeIn>
-            <Card className='p-2 my-3' style={{ width: '18rem', margin: 'auto'}}>
-              <Card.Img variant="top" src={avatar} />
-              {/* src={expert.image} */}
+            <Card className='p-2 my-3 cardy' >
+              <Card.Img variant="top" 
+                        className='expert-img'
+                        src={avatar[i]} 
+                    /* src={expert.image} */
+              />
               <Card.Body>
                 <Card.Title>{expert.name}</Card.Title>
                 <Card.Text>Location: {expert.address}</Card.Text>
@@ -43,7 +57,7 @@ import avatar from '../Assets/avatar.jpg'
   return (
     <div className='experts'>
       <Container fluid>
-        <Row > {/* style={{justifyContent: 'center'}} */}
+        <Row className='experts-row'> {/* style={{justifyContent: 'center'}} */}
           {MapExpertCards()}
           {/* {LoopExpertCards()} */}
         </Row>

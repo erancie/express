@@ -7,14 +7,14 @@ import FadeIn from 'react-fade-in/lib/FadeIn'
 const Newtask = () => {
   const history = useHistory(); 
   const today = new Date()
-  console.log(`today: ${today}`)
+  // console.log(`today: ${today}`)
 
   const dateString = (date) => {   //Date() to string
     let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
     return dateReadable
   }
   const todayString = dateString(today)
-  console.log(`todayString: ${todayString}`)
+  // console.log(`todayString: ${todayString}`)
 
   const [task, setTask] = useState({
     title: '',
@@ -36,7 +36,7 @@ const Newtask = () => {
     })
   }
   const handleOnclick = () => {
-    console.log(task)
+    // console.log(task)
     fetch('/tasks', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -49,6 +49,7 @@ const Newtask = () => {
         date: task.date,
         budgettype: task.budgettype,
         budgetamount: task.budgetamount
+        //when user is logged in, add posting user id to task
       })
     })
     .then(response => response.json())
@@ -140,7 +141,6 @@ const Newtask = () => {
             {/* Image Upload -TO ADD */}
             <Col sm='5'><Form.Control onChange={handleChange} 
                                       name='image' type="file" 
-                                      onChange={handleChange} 
                                       accept="image/png, image/jpeg"
                                       className="pb-3" style={{height: '2.8em'}}  /></Col>
           </Form.Group>
