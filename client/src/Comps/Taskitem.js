@@ -26,8 +26,6 @@ const Taskitem =()=> {
     })
   }
 
-
-
   let date = new Date(task.date); //from ISO
   let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
 
