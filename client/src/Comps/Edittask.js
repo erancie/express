@@ -48,9 +48,7 @@ const Edittask = (props) => {
         history.push(generatePath(`/findtask`))
       }
     } catch (error) {
-      console.log('error deleting task')
-      console.log(`error:---------->`+ error)
-
+      console.log('error deleting task: '+ error)
     }
 
     // else { console.log('error deleting task') }
