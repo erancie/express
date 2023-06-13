@@ -4,14 +4,15 @@ import {Row, Container, Col, Card, Button} from 'react-bootstrap'
 import Topnav from './Topnav'
 import FadeIn from 'react-fade-in/lib/FadeIn'
 import pic from './Assets/pic-place.png'
+import hackyPic from './Comps/hackyPic'
 
 const Findtask = () => {
   const history = useHistory(); 
   const [findState, setFindState] = useState({
     searchTerm: '',
     suburbTerm: '',
-    fromDate: '2021-10-01',
-    toDate: '2021-11-30'
+    fromDate: '2020-01-01',
+    toDate: '2023-12-30'
   })
   const handleChange = (event)=>{
     const {name, value } = event.target
@@ -50,7 +51,7 @@ const Findtask = () => {
         <Card className='m-5 item-hover' style={cardStyle}>
           <Card.Body  style={{position: 'relative'}}>
             <Card.Title style={{fontSize: '1.8rem'}}>{props.title}</Card.Title>
-            <Card.Img src={pic} />
+            <Card.Img src={hackyPic(props.title)} />
             <Card.Text>{props.description}</Card.Text>
             <Card.Text>Location: {props.suburb}</Card.Text>
             <Card.Text className='mb-5'>Date: {dateReadable}</Card.Text>
@@ -114,7 +115,7 @@ const Findtask = () => {
               delete = {handleRemove} //pass function so child can delete from parent state
               
               //how would you associate the owner of the task?
-              //inlude owner id on posting..
+              //..inlude owner id on posting.
 
             />
           </div>

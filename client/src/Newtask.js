@@ -7,14 +7,14 @@ import FadeIn from 'react-fade-in/lib/FadeIn'
 const Newtask = () => {
   const history = useHistory(); 
   const today = new Date()
-  console.log(`today: ${today}`)
+  // console.log(`today: ${today}`)
 
   const dateString = (date) => {   //Date() to string
     let dateReadable = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
     return dateReadable
   }
   const todayString = dateString(today)
-  console.log(`todayString: ${todayString}`)
+  // console.log(`todayString: ${todayString}`)
 
   const [task, setTask] = useState({
     title: '',
@@ -36,7 +36,7 @@ const Newtask = () => {
     })
   }
   const handleOnclick = () => {
-    console.log(task)
+    // console.log(task)
     fetch('/tasks', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},

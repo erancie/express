@@ -21,9 +21,7 @@ const uri = `mongodb+srv://admin-elliot:${process.env.MONGO_PW}@main.hzw1z.mongo
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('main db connected');
-});
+db.once('open', ()=>console.log('main db connected') )
 
 //EXPRESS////////////////
 let app = express();
@@ -56,7 +54,7 @@ const base = `${__dirname}/public`;
 
 
 // - Static declaration - 
-app.use(express.static('public'))
+// app.use(express.static('public'))
 
 // point to built files in React client
 app.use(express.static(path.join(__dirname, 'client/build')));
