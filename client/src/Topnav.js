@@ -16,7 +16,7 @@ export default class Topnav extends Component {  //Child Class
         <Navbar fixed="top" bg="light" expand="lg">
           <Container>
             <Navbar.Brand as={Link} to="/">
-              <BiGlobeAlt className='logo' color={'#475d7c'} size={40} />
+              <BiGlobeAlt className='logo' color={'rgb(107, 140, 152)'} size={40} />
               <Navbar.Text class='brand'> iService</Navbar.Text>
               {/* <span class='brand'> iService</span> */}
               </Navbar.Brand>

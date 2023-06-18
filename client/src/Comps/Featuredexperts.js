@@ -32,9 +32,9 @@ import prof6 from '../Assets/prof6.webp'
       //replace with just () for implicit return
       // return( // or explicit 'return' required for .map() 
       cards.push(
-        <Col key={expert._id.toString()} xs='12' md='6' lg='4' xl='3'>
+        <Col key={expert._id.toString()} xs='10' md='6' lg='4' xl='3'>
           <FadeIn>
-            <Card className='p-2 my-3 cardy' >
+            <Card className='p-2 my-3 expert-card' >
               <Card.Img variant="top" 
                         className='expert-img'
                         src={avatar[i]} 
@@ -45,7 +45,7 @@ import prof6 from '../Assets/prof6.webp'
                 <Card.Text>Location: {expert.address}</Card.Text>
                 <Card.Text>Contact: {expert.mobile}</Card.Text>
                 <Card.Text>Rating - {expert.rating}/5</Card.Text>
-                <Button className='button' variant="primary">Contact {expert.name}</Button>
+                <Button className='button mt-1' variant="primary">Contact {expert.name}</Button>
               </Card.Body>
             </Card>
           </FadeIn>

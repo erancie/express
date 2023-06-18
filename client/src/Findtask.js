@@ -50,7 +50,7 @@ const Findtask = () => {
         <Card className='m-5 item-hover' style={cardStyle}>
           <Card.Body  style={{position: 'relative'}}>
             <Card.Title style={{fontSize: '1.8rem'}}>{props.title}</Card.Title>
-            <Card.Img src={hackyPic(props.title)} />
+            <Card.Img className='cardImg' src={hackyPic(props.title)} />
             <Card.Text>{props.description}</Card.Text>
             <Card.Text>Location: {props.suburb}</Card.Text>
             <Card.Text className='mb-5'>Date: {dateReadable}</Card.Text>
@@ -122,18 +122,19 @@ const Findtask = () => {
         </Row>
       </Container>
     )
-  }
+  } 
 
   return (
     <div className='find-task'>
         <Topnav />
         <div className='tasks-hero'>
-          <h1>Find a task</h1>
+          <h1>Find a Task</h1>
         </div>
         {/* <br/><br/><br/><br/> */}
-        <Row>
+        <Row className='search-bars'>
           <Col xs={12} md={2} />
-          <Col xs={12} md={4} >
+
+          <Col xs={12} md={8} >
             <input           
               onChange = {handleChange}
               name= {'searchTerm'}    //need name same as state property to handle complex state
@@ -148,8 +149,6 @@ const Findtask = () => {
               placeholder = "search suburb"
               value = {findState.suburbTerm}
             />
-          </Col>
-          <Col xs={12} md={4} >
             <input          
               onChange = {handleChange}
               name={'fromDate'}
